@@ -1,0 +1,58 @@
+$xs: 480px;
+$sm: 768px;
+$md: 992px;
+$lg: 1200px;
+
+@mixin xs {
+	@media screen and (min-width: $xs) {
+		@content;
+	}
+}
+
+@mixin sm {
+	@media screen and (min-width: $sm) {
+		@content;
+	}
+}
+
+@mixin md {
+	@media screen and (min-width: $md) {
+		@content;
+	}
+}
+
+@mixin lg {
+	@media screen and (min-width: $lg) {
+		@content;
+	}
+}
+
+// Rem output with px fallback
+@mixin font-size($sizeValue: 1) {
+	font-size: ($sizeValue * 16) * 1px;
+	font-size: $sizeValue * 1rem;
+}
+
+// Center block
+@mixin center-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+// Clearfix
+@mixin clearfix() {
+	content: "";
+	display: table;
+	table-layout: fixed;
+}
+
+// Clear after (not all clearfix need this also)
+@mixin clearfix-after() {
+	clear: both;
+}
+
+// Column width with margin
+@mixin column-width($numberColumns: 3) {
+	width: map-get( $columns, $numberColumns ) - ( ( $columns__margin * ( $numberColumns - 1 ) ) / $numberColumns );
+}
