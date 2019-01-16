@@ -1,8 +1,42 @@
 footer {
-  background: grey;
-  padding: 5px;
-  color: #fff;
-  a {
-    color: pink
+  .footer {
+    height: 400px;
+    position: relative;
+  }
+  .vert-align {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+  text-align: center;
+  span {
+    background: red;
+    color: #fff;
+    padding: 20px;
+    font-size: 45px;
+  }
+  .signature {
+    background: #1d1d24;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    padding: 20px 0;
+    a {
+      color: #fff;
+      font-weight: 700;
+    }
+    .fb {
+      height: 20px;
+    }
+    .do {
+      position: absolute;
+      right: 15px;
+      height: 25px;
+    }
   }
 }

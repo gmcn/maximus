@@ -228,7 +228,7 @@ select,
 optgroup,
 textarea {
   color: #404040;
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 16px;
   font-size: 1rem;
   line-height: 1.5; }
@@ -604,11 +604,39 @@ a {
 # Footer
 --------------------------------------------------------------*/
 footer {
-  background: grey;
-  padding: 5px;
-  color: #fff; }
-  footer a {
-    color: pink; }
+  text-align: center; }
+  footer .footer {
+    height: 400px;
+    position: relative; }
+  footer .vert-align {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%); }
+  footer span {
+    background: red;
+    color: #fff;
+    padding: 20px;
+    font-size: 45px; }
+  footer .signature {
+    background: #1d1d24;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    padding: 20px 0; }
+    footer .signature a {
+      color: #fff;
+      font-weight: 700; }
+    footer .signature .fb {
+      height: 20px; }
+    footer .signature .do {
+      position: absolute;
+      right: 15px;
+      height: 25px; }
 
 /*--------------------------------------------------------------
 # Homepage
@@ -2761,7 +2789,7 @@ html {
   -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
   line-height: 1.42857;
   color: #333333;

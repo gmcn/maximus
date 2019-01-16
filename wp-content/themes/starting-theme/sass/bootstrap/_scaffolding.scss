@@ -1,4 +1,4 @@
-//
+//$font__main
 // Scaffolding
 // --------------------------------------------------
 
@@ -25,7 +25,7 @@ html {
 }
 
 body {
-  font-family: $font-family-base;
+  font-family: $font__main;
   font-size: $font-size-base;
   line-height: $line-height-base;
   color: $text-color;
