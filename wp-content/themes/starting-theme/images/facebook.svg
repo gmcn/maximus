@@ -1,37 +1,9 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
-<!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 155.139 155.139" style="enable-background:new 0 0 155.139 155.139;" xml:space="preserve" width="512px" height="512px">
-<g>
-	<path id="f_1_" d="M89.584,155.139V84.378h23.742l3.562-27.585H89.584V39.184   c0-7.984,2.208-13.425,13.67-13.425l14.595-0.006V1.08C115.325,0.752,106.661,0,96.577,0C75.52,0,61.104,12.853,61.104,36.452   v20.341H37.29v27.585h23.814v70.761H89.584z" fill="#FFFFFF"/>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
-<g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45">
+  <g id="Group_667" data-name="Group 667" transform="translate(-914 -330)">
+    <path id="Path_21677" data-name="Path 21677" d="M35.816,44.547V31.174h3.543l.514-4.115H35.816V24.43c0-1.2.343-2,2.058-2h2.172V18.771A26.565,26.565,0,0,0,36.9,18.6c-3.143,0-5.258,1.886-5.258,5.43v3.029H28.1v4.115h3.543V44.547" transform="translate(901.673 320.542)" fill="#fff"/>
+    <g id="Ellipse_29" data-name="Ellipse 29" transform="translate(914 330)" fill="none" stroke="#fff" stroke-width="3">
+      <circle cx="22.5" cy="22.5" r="22.5" stroke="none"/>
+      <circle cx="22.5" cy="22.5" r="21" fill="none"/>
+    </g>
+  </g>
 </svg>

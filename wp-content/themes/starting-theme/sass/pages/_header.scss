@@ -15,3 +15,255 @@ ul.nav li.menu-item-has-children:hover > ul.dropdown-menu {
     display: block !important;
   }
 }
+
+header {
+  padding: 0 0 15px 0;
+  .site-branding {
+    img.logo {
+      height: 82px;
+      position: relative;
+      z-index: 999;
+      padding-top: 10px;
+      border-top: 10px solid #9F000A;
+    }
+    img.hamburger {
+      height: 25px;
+      @include md {
+        margin-left: 20px;
+      }
+      margin-right: 20px;
+      z-index: 1;
+      position: relative;
+    }
+  }
+}
+
+.contact-us {
+  text-align: center;
+  right: 110px;
+  color: #fff;
+  position: absolute;
+  background: #9F000A;
+  top: 0;
+  padding-top: 30px;
+  padding: 25px 10px 10px 10px;
+  border-radius: 0 0 5px 5px;
+  span {
+    display: block;
+    color: rgba(255, 255, 255, .5);
+  }
+  h2 {
+    font-size: 17px;
+    margin: 5px 0;
+    font-weight: 700;
+  }
+
+}
+
+span.open {
+  img {
+    width: 45px;
+  }
+  cursor: pointer;
+  position: absolute;
+  z-index: 1;
+  right: 30px;
+  background: #9F000A;
+  top: 0;
+  padding-top: 30px;
+  padding: 40px 10px 10px 10px;
+  border-radius: 0 0 5px 5px;
+}
+
+.overlay {
+    height: 0%;
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    background-color: rgba(111,145,155,1);
+    background-image: url(images/maximus-logomark-opennav.svg);
+    background-repeat: no-repeat;
+    background-position: -350px;
+    overflow-y: hidden;
+    transition: 0.5s;
+}
+
+.overlay-content {
+    position: relative;
+    top: 15%;
+    height: 100%;
+    color: #fff;
+    font-size: 14px;
+    @include md {
+    font-size: 16px;
+    }
+    h3 {
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255, 255, 255, .5);
+      margin: 0 0 15px 0;
+    }
+    &__contact {
+      .wrapper {
+        margin-bottom: 25px;
+        a {
+          transition: .5s;
+        }
+        a.telephone {
+          font-size: 36px;
+          color: rgba(255, 255, 255, .5);
+        }
+        a.telephone:hover {
+          color: #fff;
+        }
+        a.email {
+          font-size: 30px;
+          color: rgba(255, 255, 255, .5);
+        }
+        a.email:hover {
+          color: #fff;
+        }
+        a.social {
+          img {
+            height: 45px;
+          }
+        }
+      }
+    }
+    input#search {
+      background: #fff url(images/mag-glass.png) no-repeat 5px 50%;
+      margin-bottom: 15px;
+      padding: 10px 10px 10px 30px;
+      width: 100%;
+      @include md {
+        width: 50%;
+      }
+    }
+
+
+    .col-md-6, .col-md-3 {
+      margin-bottom: 15px;
+    }
+    ul {
+      text-align: left;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      a {
+        font-size: 18px;
+        @include md {
+          font-size: 28px;
+        }
+        font-weight: 400;
+        color: #fff;
+        text-transform: uppercase;
+        transition: .5s;
+      }
+      a:hover {
+        color: #00A3E6;
+      }
+    }
+    ul ul {
+      margin-left: 15px;
+      @include md {
+        display: none;
+        transition: 0.5s;
+      }
+      a {
+        @include md {
+          font-size: 20px;
+          font-weight: 700;
+        }
+      color: #00A3E6;
+      text-decoration: none;
+      font-size: 16px;
+      }
+      a:hover {
+        color: #fff;
+      }
+    }
+    ul ul ul {
+      a {
+        @include md {
+          font-size: 20px;
+          font-weight: 400;
+        }
+        color: #00A3E6;
+        text-decoration: none;
+        font-size: 16px;
+      }
+      font-weight: 400;
+    }
+    ul ul:hover {
+      display: block
+    }
+    ul li ul {
+      transition: 0.5s;
+    }
+    ul li:hover ul {
+      display: block;
+    }
+    img {
+      height: 25px;
+    }
+}
+
+.overlay a:hover, .overlay a:focus {
+    color: #fff;
+    text-decoration: none;
+}
+
+.overlay .closebtn {
+    position: absolute;
+    right: 30px;
+    background: #9F000A;
+    top: 0;
+    padding-top: 30px;
+    padding: 40px 10px 10px 10px;
+    border-radius: 0 0 5px 5px;
+    font-size: 80px;
+    line-height: 40px;
+    z-index: 99999;
+    color: #fff;
+    transition: .5s;
+}
+
+.overlay .closebtn:hover {
+  // transform: rotate(90deg);
+  color: #405C6F;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay {overflow-y: auto;}
+  .overlay a {font-size: 20px}
+  .overlay .closebtn {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+  }
+}
+
+.in-nav {
+  position: absolute;
+  top: 30px;
+  width: 100%;
+  text-align: center;
+  form {
+    display: inline;
+    background: #fff;
+    border-radius: 30px;
+    padding: 10px;
+    input {
+      border: 0;
+    }
+    input.img {
+      vertical-align: bottom;
+    }
+  }
+  img {
+    height: 25px;
+    margin-left: 8px;
+  }
+}
