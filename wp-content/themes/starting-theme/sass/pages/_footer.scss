@@ -44,7 +44,10 @@ footer {
     background: #9F000A;
     color: #fff;
     padding: 20px;
-    font-size: 45px;
+    font-size: 28px;
+    @include md {
+      font-size: 45px;
+    }
     font-weight: 700;
   }
   .signature {
