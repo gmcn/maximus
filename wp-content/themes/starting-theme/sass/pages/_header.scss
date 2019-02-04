@@ -1,3 +1,12 @@
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
 .navbar-default .navbar-nav > li.menu-item-has-children a {
   /*padding-right: 50px;*/
 }
@@ -162,7 +171,7 @@ span.open {
         transition: .5s;
       }
       a:hover {
-        color: #00A3E6;
+        color: #405C6F;
       }
     }
     ul ul {
@@ -174,11 +183,9 @@ span.open {
       a {
         @include md {
           font-size: 20px;
-          font-weight: 700;
         }
-      color: #00A3E6;
+      color: #405C6F;
       text-decoration: none;
-      font-size: 16px;
       }
       a:hover {
         color: #fff;

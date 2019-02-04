@@ -586,6 +586,16 @@ a {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
 .navbar-default .navbar-nav > li.menu-item-has-children a {
   /*padding-right: 50px;*/ }
 
@@ -717,7 +727,7 @@ span.open {
         .overlay-content ul a {
           font-size: 28px; } }
     .overlay-content ul a:hover {
-      color: #00A3E6; }
+      color: #405C6F; }
   .overlay-content ul ul {
     margin-left: 15px; }
     @media screen and (min-width: 992px) {
@@ -725,13 +735,11 @@ span.open {
         display: none;
         transition: 0.5s; } }
     .overlay-content ul ul a {
-      color: #00A3E6;
-      text-decoration: none;
-      font-size: 16px; }
+      color: #405C6F;
+      text-decoration: none; }
       @media screen and (min-width: 992px) {
         .overlay-content ul ul a {
-          font-size: 20px;
-          font-weight: 700; } }
+          font-size: 20px; } }
     .overlay-content ul ul a:hover {
       color: #fff; }
   .overlay-content ul ul ul {
@@ -807,6 +815,7 @@ span.open {
 # Footer
 --------------------------------------------------------------*/
 footer {
+  padding-top: 30px;
   text-align: center; }
   footer .footer {
     height: 500px;
@@ -830,6 +839,8 @@ footer {
           text-decoration: none; }
       footer .footer ul li:last-of-type a {
         border-right: none; }
+      footer .footer ul ul {
+        display: none; }
   footer .vert-align {
     position: absolute;
     top: 50%;
@@ -867,6 +878,124 @@ footer {
 /*--------------------------------------------------------------
 # Homepage
 --------------------------------------------------------------*/
+.container-fluid.products {
+  padding-left: 0;
+  padding-right: 0; }
+
+.about {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #fff;
+  background: #9F000A;
+  padding: 75px 0;
+  font-size: 55px;
+  font-weight: 300; }
+  .about span {
+    font-weight: 700; }
+  .about a {
+    background: #9F000A;
+    padding: 20px;
+    font-size: 20px;
+    transition: .5s;
+    color: #fff; }
+  .about a:hover {
+    background: #000;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none; }
+
+.dealers {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #fff;
+  background: url(images/map.svg) #9F000A no-repeat right center;
+  padding: 75px 0;
+  font-size: 55px;
+  font-weight: 300; }
+  .dealers span {
+    font-weight: 700; }
+  .dealers a {
+    background: #9F000A;
+    padding: 20px;
+    font-size: 20px;
+    transition: .5s;
+    color: #fff; }
+  .dealers a:hover {
+    background: #000;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none; }
+
+.products {
+  margin-bottom: 15px; }
+  .products .product:first-of-type {
+    padding-left: 0;
+    padding-right: 7.5px; }
+  .products .product:last-of-type {
+    padding-right: 0;
+    padding-left: 7.5px; }
+  .products .product {
+    height: 400px;
+    background-size: cover;
+    text-align: center;
+    overflow: hidden; }
+    .products .product__wrapper {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: .5s; }
+      .products .product__wrapper .vert-align {
+        position: absolute;
+        text-align: center;
+        top: 50%;
+        width: calc(100% - 30px);
+        -webkit-transform: translateY(-50%);
+        -moz-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        -o-transform: translateY(-50%);
+        transform: translateY(-50%); }
+    .products .product__wrapper:hover {
+      transform: scale(1.15); }
+    .products .product h2 {
+      background: #9F000A;
+      color: #fff;
+      padding: 25px 15px;
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 700; }
+      .products .product h2 a {
+        display: block;
+        color: #fff;
+        font-weight: 300;
+        font-size: 14px;
+        transition: .5s;
+        padding-top: 5px; }
+      .products .product h2 a:hover {
+        opacity: .5;
+        text-decoration: none; }
+
+.quote {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #fff;
+  background: #9F000A;
+  padding: 75px 0;
+  font-size: 55px;
+  font-weight: 300; }
+  .quote span {
+    font-weight: 700; }
+  .quote a {
+    background: #9F000A;
+    padding: 20px;
+    font-size: 20px;
+    transition: .5s;
+    color: #fff; }
+  .quote a:hover {
+    background: #000;
+    font-size: 20px;
+    color: #fff;
+    text-decoration: none; }
+
 /*--------------------------------------------------------------
 # Content
 --------------------------------------------------------------*/
