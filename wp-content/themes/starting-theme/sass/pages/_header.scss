@@ -54,12 +54,18 @@ header {
   position: absolute;
   background: #9F000A;
   top: 0;
+  z-index: 999;
   padding-top: 30px;
   padding: 25px 10px 10px 10px;
   border-radius: 0 0 5px 5px;
-  span {
+  span, a {
     display: block;
     color: rgba(255, 255, 255, .5);
+    transition: .5s;
+  }
+  a:hover {
+    color: rgba(0, 0, 0, .5);
+    text-decoration: none;
   }
   h2 {
     font-size: 17px;
@@ -228,7 +234,7 @@ span.open {
     background: #9F000A;
     top: 0;
     padding-top: 30px;
-    padding: 40px 10px 10px 10px;
+    padding: 32px 10px 10px 10px;
     border-radius: 0 0 5px 5px;
     font-size: 80px;
     line-height: 40px;

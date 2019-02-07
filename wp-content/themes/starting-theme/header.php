@@ -35,7 +35,7 @@
 				<div class="col-xs-6">
 
 					<div class="contact-us hidden-xs">
-						<span>+44 (0) 28 8774 8873</span>
+						<span><a href="tel:+44 (0) 28 8774 8873">+44 (0) 28 8774 8873</a></span>
 						<h2>CONTACT</h2>
 					</div>
 

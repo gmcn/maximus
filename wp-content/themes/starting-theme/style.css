@@ -634,12 +634,17 @@ header {
   position: absolute;
   background: #9F000A;
   top: 0;
+  z-index: 999;
   padding-top: 30px;
   padding: 25px 10px 10px 10px;
   border-radius: 0 0 5px 5px; }
-  .contact-us span {
+  .contact-us span, .contact-us a {
     display: block;
-    color: rgba(255, 255, 255, 0.5); }
+    color: rgba(255, 255, 255, 0.5);
+    transition: .5s; }
+  .contact-us a:hover {
+    color: rgba(0, 0, 0, 0.5);
+    text-decoration: none; }
   .contact-us h2 {
     font-size: 17px;
     margin: 5px 0;
@@ -771,7 +776,7 @@ span.open {
   background: #9F000A;
   top: 0;
   padding-top: 30px;
-  padding: 40px 10px 10px 10px;
+  padding: 32px 10px 10px 10px;
   border-radius: 0 0 5px 5px;
   font-size: 80px;
   line-height: 40px;
@@ -878,31 +883,91 @@ footer {
 /*--------------------------------------------------------------
 # Homepage
 --------------------------------------------------------------*/
-.container-fluid.products {
+.container-fluid.hero {
   padding-left: 0;
   padding-right: 0; }
 
+.hero {
+  height: 100vh;
+  position: relative;
+  margin-top: -100px;
+  margin-bottom: 15px;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden; }
+  .hero__wrapper {
+    background: rgba(0, 0, 0, 0.25);
+    height: 100%;
+    width: 100%;
+    color: #fff;
+    text-align: center; }
+    .hero__wrapper .vert-align {
+      position: absolute;
+      text-align: center;
+      top: 50%;
+      width: 100%;
+      -webkit-transform: translateY(-50%);
+      -moz-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%); }
+    .hero__wrapper .vert-align::before {
+      content: "";
+      height: 1000px;
+      width: 10px;
+      background: #fff;
+      display: block;
+      margin: 0 auto; }
+    .hero__wrapper .vert-align::after {
+      content: "";
+      height: 1000px;
+      width: 10px;
+      background: #fff;
+      display: block;
+      margin: 0 auto; }
+    .hero__wrapper .cta {
+      border: 10px solid #fff;
+      padding: 50px;
+      border-radius: 15px;
+      margin: 0 auto;
+      display: inline-block;
+      text-align: center; }
+    .hero__wrapper p.heading {
+      font-size: 40px;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 0;
+      float: left; }
+      @media screen and (min-width: 992px) {
+        .hero__wrapper p.heading {
+          font-size: 48px; } }
+    .hero__wrapper p {
+      font-size: 19px;
+      font-weight: 300;
+      text-transform: uppercase;
+      float: left;
+      clear: left; }
+    .hero__wrapper a {
+      display: inline-block;
+      margin-top: 15px;
+      margin-left: 25px; }
+
 .about {
   text-align: center;
-  margin-bottom: 15px;
-  color: #fff;
-  background: #9F000A;
-  padding: 75px 0;
-  font-size: 55px;
-  font-weight: 300; }
-  .about span {
-    font-weight: 700; }
-  .about a {
-    background: #9F000A;
-    padding: 20px;
-    font-size: 20px;
-    transition: .5s;
-    color: #fff; }
-  .about a:hover {
-    background: #000;
-    font-size: 20px;
+  margin-bottom: 15px; }
+  .about .about-img {
+    padding-left: 0; }
+    .about .about-img .img {
+      height: 100%; }
+  .about .content {
+    background: #405C6F;
     color: #fff;
-    text-decoration: none; }
+    padding: 50px 50px;
+    font-size: 18px; }
+    .about .content h2 {
+      margin: 0 0 30px 0;
+      font-weight: 700; }
 
 .dealers {
   text-align: center;
@@ -925,6 +990,10 @@ footer {
     font-size: 20px;
     color: #fff;
     text-decoration: none; }
+
+.container-fluid.products {
+  padding-left: 0;
+  padding-right: 0; }
 
 .products {
   margin-bottom: 15px; }
@@ -977,13 +1046,17 @@ footer {
 .quote {
   text-align: center;
   margin-bottom: 15px;
-  color: #fff;
+  color: rgba(255, 255, 255, 0.5);
   background: #9F000A;
-  padding: 75px 0;
-  font-size: 55px;
+  font-size: 16px;
+  text-align: center;
   font-weight: 300; }
-  .quote span {
-    font-weight: 700; }
+  .quote p {
+    font-size: 25px;
+    color: #fff;
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 25px; }
   .quote a {
     background: #9F000A;
     padding: 20px;
@@ -995,6 +1068,27 @@ footer {
     font-size: 20px;
     color: #fff;
     text-decoration: none; }
+  .quote .col-md-12 {
+    padding: 100px; }
+  .quote .col-md-12:before {
+    content: "“";
+    color: #fff;
+    font-size: 150px;
+    font-weight: 700;
+    float: left;
+    line-height: .5em;
+    height: 50px;
+    width: 50px; }
+  .quote .col-md-12:after {
+    content: "“";
+    color: #fff;
+    font-size: 150px;
+    font-weight: 700;
+    float: right;
+    line-height: .5em;
+    height: 50px;
+    width: 50px;
+    transform: rotate(180deg); }
 
 /*--------------------------------------------------------------
 # Content
