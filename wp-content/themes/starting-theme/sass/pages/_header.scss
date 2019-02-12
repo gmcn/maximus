@@ -127,14 +127,20 @@ span.open {
           transition: .5s;
         }
         a.telephone {
-          font-size: 36px;
+          font-size: 22px;
+          @include md {
+            font-size: 36px;
+          }
           color: rgba(255, 255, 255, .5);
         }
         a.telephone:hover {
           color: #fff;
         }
         a.email {
-          font-size: 30px;
+          font-size: 22px;
+          @include md {
+            font-size: 30px;
+          }
           color: rgba(255, 255, 255, .5);
         }
         a.email:hover {
