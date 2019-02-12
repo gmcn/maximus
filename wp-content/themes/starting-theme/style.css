@@ -696,13 +696,19 @@ span.open {
     .overlay-content__contact .wrapper a {
       transition: .5s; }
     .overlay-content__contact .wrapper a.telephone {
-      font-size: 36px;
+      font-size: 22px;
       color: rgba(255, 255, 255, 0.5); }
+      @media screen and (min-width: 992px) {
+        .overlay-content__contact .wrapper a.telephone {
+          font-size: 36px; } }
     .overlay-content__contact .wrapper a.telephone:hover {
       color: #fff; }
     .overlay-content__contact .wrapper a.email {
-      font-size: 30px;
+      font-size: 22px;
       color: rgba(255, 255, 255, 0.5); }
+      @media screen and (min-width: 992px) {
+        .overlay-content__contact .wrapper a.email {
+          font-size: 30px; } }
     .overlay-content__contact .wrapper a.email:hover {
       color: #fff; }
     .overlay-content__contact .wrapper a.social img {
@@ -1122,6 +1128,98 @@ footer {
 
 .bypostauthor {
   display: block; }
+
+.contact {
+  background: url(images/contact_bg.jpg) top center;
+  background-size: cover;
+  color: #fff;
+  padding: 30px 0 50px 0; }
+  .contact .title {
+    border-bottom: 2px solid #fff; }
+    .contact .title h1 {
+      margin-bottom: 25px;
+      font-size: 30px;
+      font-weight: 700;
+      margin-top: 0; }
+  .contact .breadcrumbs {
+    text-align: right;
+    font-weight: 700; }
+    .contact .breadcrumbs a {
+      color: #fff; }
+  .contact .contact_details {
+    font-weight: 200;
+    font-size: 16px;
+    padding-bottom: 50px;
+    border-bottom: 5px solid #fff; }
+    .contact .contact_details h2 {
+      color: #9F000A;
+      font-size: 24px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin: 50px 0; }
+    .contact .contact_details span {
+      font-weight: 700;
+      text-transform: uppercase;
+      display: block;
+      margin-top: 15px; }
+    .contact .contact_details .find .fb {
+      height: 25px;
+      margin-right: 10px; }
+    .contact .contact_details .find a {
+      display: block;
+      margin-top: 15px;
+      font-weight: 700; }
+    .contact .contact_details a {
+      color: #fff;
+      transition: .5s; }
+    .contact .contact_details a:hover {
+      color: #9F000A;
+      text-decoration: none; }
+
+.form {
+  padding: 25px 0; }
+  .form .form-control {
+    padding: 20px; }
+  .form .wpcf7-submit {
+    background: #9F000A;
+    color: #fff;
+    padding: 20px 25px;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 25px; }
+  .form select {
+    color: #000;
+    width: 100%;
+    height: 40px; }
+  .form .wpcf7-list-item-label {
+    font-size: 12px;
+    margin-left: 10px; }
+  .form a.data {
+    color: #fff;
+    font-weight: 700; }
+
+.add-content {
+  background: #405C6F;
+  color: #fff;
+  padding: 50px 50px 50px 50px !important; }
+  .add-content h2:first-of-type {
+    color: #6F919B;
+    font-size: 23px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 25px; }
+  .add-content a {
+    color: #6F919B;
+    transition: .5s;
+    font-weight: 700; }
+  .add-content a:hover {
+    color: #fff;
+    text-decoration: none; }
 
 /*--------------------------------------------------------------
 # Infinite scroll
@@ -4567,7 +4665,6 @@ legend {
   border-bottom: 1px solid #e5e5e5; }
 
 label {
-  display: inline-block;
   max-width: 100%;
   margin-bottom: 5px;
   font-weight: bold; }

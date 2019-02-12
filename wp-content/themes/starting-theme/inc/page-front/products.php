@@ -11,7 +11,7 @@
 
     ?>
 
-  		<div class="col-md-4 product">
+  		<div class="col-md-4 product wow fadeInUp">
         <div class="product__wrapper" style="background: url(<?php echo $thumb_url; ?>) center center;">
           <div class="vert-align">
             <h2><?php echo the_title(); ?>

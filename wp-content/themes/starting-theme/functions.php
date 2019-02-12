@@ -334,6 +334,11 @@ function careers_post_type() {
 }
 add_action( 'init', 'careers_post_type', 0 );
 
+add_action( 'wp_print_styles', 'wps_deregister_styles', 100 );
+function wps_deregister_styles() {
+    wp_deregister_style( 'contact-form-7' );
+}
+
 // Move Yoast to bottom
 function yoasttobottom() {
 	return 'low';

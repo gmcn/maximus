@@ -9,7 +9,7 @@
 
   <div class="container-fluid quote">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 wow fadeIn">
 
         <p><?php echo $frontPageQuote ?></p>
         <?php echo $quotedPerson ?> | <?php echo $quotedCompany ?>
