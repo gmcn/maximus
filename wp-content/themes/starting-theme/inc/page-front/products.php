@@ -2,7 +2,7 @@
 	$args = array( 'post_type' => 'products', 'posts_per_page' => 6, 'orderby' => 'menu_order', 'order' => 'DESC' );
 	$loop = new WP_Query( $args );
 	if ($loop->have_posts()) : ?>
-  <div class="container-fluid products">
+  <div class="container-fluid fp_products">
   	<?php while ( $loop->have_posts() ) : $loop->the_post();
 
       $thumb_id = get_post_thumbnail_id();
