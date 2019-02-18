@@ -9,6 +9,10 @@
   }
   window.onload = startMatchHeight;
 
+  $(document).ready(function() {
+		$(".fancybox").fancybox();
+	});
+
 } ) (jQuery);
 
 /* Open when someone clicks on the span element */
