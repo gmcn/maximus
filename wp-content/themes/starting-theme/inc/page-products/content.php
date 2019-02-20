@@ -1,4 +1,18 @@
 <div class="container-fluid product-single">
+
+  <div class="row parent">
+		<div class="col-md-6">
+			<h2>PRODUCTS</h2>
+		</div>
+		<div class="col-md-6 breadcrumbs">
+			<?php
+				if ( function_exists('yoast_breadcrumb') ) {
+				  yoast_breadcrumb( '<p id="breadcrumbs">','</p>' );
+				}
+				?>
+		</div>
+	</div>
+
 <div class="row">
 
   <?php
