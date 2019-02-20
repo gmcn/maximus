@@ -28,11 +28,18 @@ ul.nav li.menu-item-has-children:hover > ul.dropdown-menu {
 header {
   padding: 0 0 15px 0;
   .site-branding {
-    img.logo {
+    img.logo_home {
       height: 82px;
       position: relative;
       z-index: 999;
       padding-top: 10px;
+      border-top: 10px solid #9F000A;
+    }
+    img.logo {
+      height: 82px;
+      position: relative;
+      z-index: 999;
+      // padding-top: 10px;
       border-top: 10px solid #9F000A;
     }
     img.hamburger {

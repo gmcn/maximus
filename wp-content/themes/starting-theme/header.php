@@ -30,7 +30,16 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-6 site-branding">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><img class="logo" src="<?php echo get_template_directory_uri(); ?>/images/maximus-logo_white.svg" alt="<?php bloginfo( 'name' ); ?> | <?php get_bloginfo( 'description', 'display' ); ?>" /></a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+
+						<?php if ( is_front_page() ) : ?>
+					    <img class="logo_home" src="<?php echo get_template_directory_uri(); ?>/images/maximus-logo_white.svg" alt="<?php bloginfo( 'name' ); ?> | <?php get_bloginfo( 'description', 'display' ); ?>" />
+						<?php else : ?>
+						    <img class="logo" src="<?php echo get_template_directory_uri(); ?>/images/maximus-logo_red.svg" alt="<?php bloginfo( 'name' ); ?> | <?php get_bloginfo( 'description', 'display' ); ?>" />
+						<?php	endif; ?>
+
+
+					</a>
 				</div>
 				<div class="col-xs-6">
 
