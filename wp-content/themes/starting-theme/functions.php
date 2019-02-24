@@ -412,9 +412,19 @@ function partners_taxonomies()
     register_taxonomy( 'partners_country', array( 'partners' ), $partners_area_args );
 }
 
-add_filter('acf/settings/google_api_key', function () {
-    return 'AIzaSyAjsNbuNbRUFeGE740QsxQYJYPBpUREmIg';
-});
+function set_posts_per_page_for_cpt( $query ) {
+  if ( !is_admin() && $query->is_main_query() && is_post_type_archive( array('partners') ) ) {
+    $query->set( 'posts_per_page', '-1' );
+  }
+}
+add_action( 'pre_get_posts', 'set_posts_per_page_for_cpt' );
+
+function my_acf_init() {
+
+	acf_update_setting('google_api_key', 'AIzaSyDRw6nI6HGEocm0dwOFZadZerDEj7CupLo');
+}
+
+add_action('acf/init', 'my_acf_init');
 
 add_action( 'wp_print_styles', 'wps_deregister_styles', 100 );
 function wps_deregister_styles() {
