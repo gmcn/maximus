@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,6 @@ class Ai1wmue_Main_Controller {
 		// Activate hooks
 		$this->activate_actions();
 		$this->activate_filters();
-		$this->activate_textdomain();
 	}
 
 	/**
@@ -53,7 +52,7 @@ class Ai1wmue_Main_Controller {
 	 *
 	 * @return void
 	 */
-	private function activate_textdomain() {
+	public function load_textdomain() {
 		load_plugin_textdomain( AI1WMUE_PLUGIN_NAME, false, false );
 	}
 
@@ -63,11 +62,16 @@ class Ai1wmue_Main_Controller {
 	 * @return void
 	 */
 	private function activate_actions() {
-		// Init
 		add_action( 'admin_init', array( $this, 'init' ) );
+		add_action( 'admin_init', array( $this, 'load_textdomain' ) );
 
-		// All in One WP Migration
 		add_action( 'plugins_loaded', array( $this, 'ai1wm_loaded' ), 20 );
+		add_action( 'plugins_loaded', array( $this, 'ai1wm_buttons' ), 20 );
+		add_action( 'plugins_loaded', array( $this, 'ai1wm_commands' ), 20 );
+		add_action( 'plugins_loaded', array( $this, 'wp_cli' ), 20 );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_import_scripts_and_styles' ), 20 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_backups_scripts_and_styles' ), 20 );
 	}
 
 	/**
@@ -76,14 +80,27 @@ class Ai1wmue_Main_Controller {
 	 * @return void
 	 */
 	private function activate_filters() {
-		add_filter( 'ai1wm_max_file_size', array( $this, 'max_file_size' ) );
-
-		// Add links to plugin list page
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 5, 2 );
 	}
 
 	/**
-	 * Check whether All in one WP Migration is loaded
+	 * Export and import buttons
+	 */
+	public function ai1wm_buttons() {
+		add_filter( 'ai1wm_pro', 'Ai1wmue_Import_Controller::pro', 20 );
+	}
+
+	/**
+	 * Export and import commands
+	 *
+	 * @return void
+	 */
+	public function ai1wm_commands() {
+
+	}
+
+	/**
+	 * Check whether All in One WP Migration is loaded
 	 *
 	 * @return void
 	 */
@@ -94,11 +111,31 @@ class Ai1wmue_Main_Controller {
 			} else {
 				add_action( 'admin_notices', array( $this, 'ai1wm_notice' ) );
 			}
+		} else {
+			// Add export inactive themes
+			add_action( 'ai1wm_export_inactive_themes', 'Ai1wmue_Export_Controller::inactive_themes' );
+
+			// Add export inactive plugins
+			add_action( 'ai1wm_export_inactive_plugins', 'Ai1wmue_Export_Controller::inactive_plugins' );
+
+			// Add export cache files
+			add_action( 'ai1wm_export_cache_files', 'Ai1wmue_Export_Controller::cache_files' );
 		}
 	}
 
 	/**
-	 * Display All in one WP Migration notice
+	 * WP CLI commands
+	 *
+	 * @return void
+	 */
+	public function wp_cli() {
+		if ( defined( 'WP_CLI' ) ) {
+			WP_CLI::add_command( 'ai1wm', 'Ai1wm_Backup_WP_CLI_Command', array( 'shortdesc' => __( 'All-in-One WP Migration Command', AI1WMUE_PLUGIN_NAME ) ) );
+		}
+	}
+
+	/**
+	 * Display All in One WP Migration notice
 	 *
 	 * @return void
 	 */
@@ -108,14 +145,64 @@ class Ai1wmue_Main_Controller {
 			<p>
 				<?php
 				_e(
-					'Unlimited extension requires <a href="https://wordpress.org/plugins/all-in-one-wp-migration/" target="_blank">All-in-One WP Migration plugin</a> to be activated. ' .
-					'<a href="https://help.servmask.com/knowledgebase/install-instructions-for-unlimited-extension/" target="_blank">Unlimited extension install instructions</a>',
+					'Unlimited Extension requires <a href="https://wordpress.org/plugins/all-in-one-wp-migration/" target="_blank">All-in-One WP Migration plugin</a> to be activated. ' .
+					'<a href="https://help.servmask.com/knowledgebase/install-instructions-for-unlimited-extension/" target="_blank">Unlimited Extension install instructions</a>',
 					AI1WMUE_PLUGIN_NAME
 				);
 				?>
 			</p>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Enqueue scripts and styles for Import Controller
+	 *
+	 * @param  string $hook Hook suffix
+	 * @return void
+	 */
+	public function enqueue_import_scripts_and_styles( $hook ) {
+		if ( stripos( 'all-in-one-wp-migration_page_ai1wm_import', $hook ) === false ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'ai1wmue_uploader',
+			Ai1wm_Template::asset_link( 'javascript/uploader.min.js', 'AI1WMUE' ),
+			array( 'jquery' )
+		);
+
+		wp_localize_script( 'ai1wmue_uploader', 'ai1wmue_uploader', array(
+			'chunk_size'  => apply_filters( 'ai1wm_max_chunk_size', AI1WM_MAX_CHUNK_SIZE ),
+			'max_retries' => apply_filters( 'ai1wm_max_chunk_retries', AI1WM_MAX_CHUNK_RETRIES ),
+			'url'         => wp_make_link_relative( admin_url( 'admin-ajax.php?action=ai1wm_import' ) ),
+			'params'      => array(
+				'priority'   => 5,
+				'secret_key' => get_option( AI1WM_SECRET_KEY ),
+			),
+			'filters'     => array(
+				'ai1wm_archive_extension' => array( 'wpress' ),
+				'ai1wm_archive_size'      => apply_filters( 'ai1wm_max_file_size', AI1WM_MAX_FILE_SIZE ),
+			),
+		) );
+	}
+
+	/**
+	 * Enqueue scripts and styles for Backup Controller
+	 *
+	 * @param  string $hook Hook suffix
+	 * @return void
+	 */
+	public function enqueue_backups_scripts_and_styles( $hook ) {
+		if ( stripos( 'all-in-one-wp-migration_page_ai1wm_backups', $hook ) === false ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'ai1wmue_restore',
+			Ai1wm_Template::asset_link( 'javascript/restore.min.js', 'AI1WMUE' ),
+			array( 'jquery' )
+		);
 	}
 
 	/**

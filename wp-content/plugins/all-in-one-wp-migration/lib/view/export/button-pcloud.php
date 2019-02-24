@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,11 +22,6 @@
  * ███████║███████╗██║  ██║ ╚████╔╝ ██║ ╚═╝ ██║██║  ██║███████║██║  ██╗
  * ╚══════╝╚══════╝╚═╝  ╚═╝  ╚═══╝  ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝
  */
+?>
 
-class Ai1wm_Recursive_Newline_Filter extends RecursiveFilterIterator {
-
-	public function accept() {
-		return strpos( $this->getInnerIterator()->getSubPathname(), "\n" ) === false &&
-			strpos( $this->getInnerIterator()->getSubPathname(), "\r" ) === false;
-	}
-}
+<a href="https://servmask.com/products/pcloud-extension" target="_blank">pCloud</a>

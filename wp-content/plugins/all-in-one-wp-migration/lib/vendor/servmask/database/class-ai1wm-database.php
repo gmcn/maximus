@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (C) 2014-2018 ServMask Inc.
+ * Copyright (C) 2014-2019 ServMask Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,6 @@
  */
 
 abstract class Ai1wm_Database {
-
-	/**
-	 * Number of queries per transaction
-	 *
-	 * @var integer
-	 */
-	const QUERIES_PER_TRANSACTION = 1000;
 
 	/**
 	 * WordPress database handler
@@ -558,9 +551,10 @@ abstract class Ai1wm_Database {
 	 * @param  string  $file_name    File name
 	 * @param  integer $table_index  Table index
 	 * @param  integer $table_offset Table offset
+	 * @param  integer $table_rows   Table rows
 	 * @return boolean
 	 */
-	public function export( $file_name, &$table_index = 0, &$table_offset = 0 ) {
+	public function export( $file_name, &$table_index = 0, &$table_offset = 0, &$table_rows = 0 ) {
 		// Set file handler
 		$file_handler = ai1wm_open( $file_name, 'ab' );
 
@@ -643,7 +637,7 @@ abstract class Ai1wm_Database {
 					$table_where = implode( ' AND ', $table_where );
 
 					// Set query with offset and rows count
-					$query = sprintf( 'SELECT t1.* FROM `%s` AS t1 JOIN (SELECT %s FROM `%s` WHERE %s ORDER BY %s LIMIT %d, %d) AS t2 USING (%s)', $table_name, $table_keys, $table_name, $table_where, $table_keys, $table_offset, 1000, $table_keys );
+					$query = sprintf( 'SELECT t1.* FROM `%s` AS t1 JOIN (SELECT %s FROM `%s` WHERE %s ORDER BY %s LIMIT %d, %d) AS t2 USING (%s)', $table_name, $table_keys, $table_name, $table_where, $table_keys, $table_offset, AI1WM_MAX_SELECT_RECORDS, $table_keys );
 
 				} else {
 
@@ -659,7 +653,7 @@ abstract class Ai1wm_Database {
 					$table_where = implode( ' AND ', $table_where );
 
 					// Set query with offset and rows count
-					$query = sprintf( 'SELECT * FROM `%s` WHERE %s ORDER BY %s LIMIT %d, %d', $table_name, $table_where, $table_keys, $table_offset, 1000 );
+					$query = sprintf( 'SELECT * FROM `%s` WHERE %s ORDER BY %s LIMIT %d, %d', $table_name, $table_where, $table_keys, $table_offset, AI1WM_MAX_SELECT_RECORDS );
 				}
 
 				// Apply additional table prefix columns
@@ -685,7 +679,7 @@ abstract class Ai1wm_Database {
 					while ( $row = $this->fetch_assoc( $result ) ) {
 
 						// Write start transaction
-						if ( $table_offset % Ai1wm_Database::QUERIES_PER_TRANSACTION === 0 ) {
+						if ( $table_offset % AI1WM_MAX_TRANSACTION_QUERIES === 0 ) {
 							ai1wm_write( $file_handler, "START TRANSACTION;\n" );
 						}
 
@@ -712,15 +706,18 @@ abstract class Ai1wm_Database {
 						// Set current table offset
 						$table_offset++;
 
+						// Set current table rows
+						$table_rows++;
+
 						// Write end of transaction
-						if ( $table_offset % Ai1wm_Database::QUERIES_PER_TRANSACTION === 0 ) {
+						if ( $table_offset % AI1WM_MAX_TRANSACTION_QUERIES === 0 ) {
 							ai1wm_write( $file_handler, "COMMIT;\n" );
 						}
 					}
 				} else {
 
 					// Write end of transaction
-					if ( $table_offset % Ai1wm_Database::QUERIES_PER_TRANSACTION !== 0 ) {
+					if ( $table_offset % AI1WM_MAX_TRANSACTION_QUERIES !== 0 ) {
 						ai1wm_write( $file_handler, "COMMIT;\n" );
 					}
 
@@ -1000,7 +997,7 @@ abstract class Ai1wm_Database {
 		// Replace first occurance at a specified position
 		if ( $position !== false ) {
 			for ( $i = 0; $i < count( $search ); $i++ ) {
-				$current = stripos( $input, $search[ $i ] );
+				$current = stripos( $input, $search[ $i ], $position );
 				if ( $current === $position ) {
 					$input = substr_replace( $input, $replace[ $i ], $current, strlen( $search[ $i ] ) );
 				}
@@ -1028,7 +1025,7 @@ abstract class Ai1wm_Database {
 		// Replace first occurance at a specified position
 		if ( $position !== false ) {
 			for ( $i = 0; $i < count( $search ); $i++ ) {
-				$current = stripos( $input, $search[ $i ] );
+				$current = stripos( $input, $search[ $i ], $position );
 				if ( $current === $position ) {
 					$input = substr_replace( $input, $replace[ $i ], $current, strlen( $search[ $i ] ) );
 				}
@@ -1050,12 +1047,12 @@ abstract class Ai1wm_Database {
 	protected function replace_table_values( $input ) {
 		// Replace base64 encoded values (Visual Composer)
 		if ( $this->get_visual_composer() ) {
-			$input = preg_replace_callback( '/\[vc_raw_html\](.+?)\[\/vc_raw_html\]/S', array( $this, 'replace_visual_composer_values_callback' ), $input );
+			$input = preg_replace_callback( '/\[vc_raw_html\]([a-zA-Z0-9\/+]*={0,2})\[\/vc_raw_html\]/S', array( $this, 'replace_visual_composer_values_callback' ), $input );
 		}
 
 		// Replace base64 encoded values (BeTheme Responsive)
 		if ( $this->get_betheme_responsive() ) {
-			$input = preg_replace_callback( "/'mfn-page-items','(.*?)'/S", array( $this, 'replace_betheme_responsive_values_callback' ), $input );
+			$input = preg_replace_callback( "/'mfn-page-items','([a-zA-Z0-9\/+]*={0,2})'/S", array( $this, 'replace_betheme_responsive_values_callback' ), $input );
 		}
 
 		// Replace serialized values
@@ -1083,7 +1080,9 @@ abstract class Ai1wm_Database {
 		$input = Ai1wm_Database_Utility::replace_serialized_values( $this->get_old_replace_values(), $this->get_new_replace_values(), $input );
 
 		// Escape MySQL special characters
-		return "'" . Ai1wm_Database_Utility::escape_mysql( $input ) . "'";
+		$input = Ai1wm_Database_Utility::escape_mysql( $input );
+
+		return "'" . $input . "'";
 	}
 
 	/**
@@ -1100,7 +1099,9 @@ abstract class Ai1wm_Database {
 		$input = Ai1wm_Database_Utility::replace_values( $this->get_old_replace_values(), $this->get_new_replace_values(), $input );
 
 		// Encode base64 characters
-		return '[vc_raw_html]' . Ai1wm_Database_Utility::base64_encode( $input ) . '[/vc_raw_html]';
+		$input = Ai1wm_Database_Utility::base64_encode( $input );
+
+		return '[vc_raw_html]' . $input . '[/vc_raw_html]';
 	}
 
 	/**
@@ -1117,7 +1118,9 @@ abstract class Ai1wm_Database {
 		$input = Ai1wm_Database_Utility::replace_serialized_values( $this->get_old_replace_values(), $this->get_new_replace_values(), $input );
 
 		// Encode base64 characters
-		return "'mfn-page-items','" . Ai1wm_Database_Utility::base64_encode( $input ) . "'";
+		$input = Ai1wm_Database_Utility::base64_encode( $input );
+
+		return "'mfn-page-items','" . $input . "'";
 	}
 
 	/**
