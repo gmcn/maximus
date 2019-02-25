@@ -72,8 +72,7 @@ class acf_field_google_map extends acf_field {
 			'client'	=> acf_get_setting('google_api_client'),
 			'libraries'	=> 'places',
 			'ver'		=> 3,
-			'callback'	=> '',
-			'language'	=> acf_get_locale()
+			'callback'	=> ''
 	   	);
 	   	
 	   	
@@ -231,7 +230,7 @@ class acf_field_google_map extends acf_field {
 		// allow_null
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Height','acf'),
-			'instructions'	=> __('Customize the map height','acf'),
+			'instructions'	=> __('Customise the map height','acf'),
 			'type'			=> 'text',
 			'name'			=> 'height',
 			'append'		=> 'px',
