@@ -1,6 +1,6 @@
 <div class="filter">
 
-    <div class="filter__wrapper">
+    <!-- <div class="filter__wrapper"> -->
       <p>Select a country</p>
       <div class="dropdown show">
         <a class="btn btn-secondary dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -15,7 +15,7 @@
            <?php } ?>
         </div>
       </div>
-    </div>
+    <!-- </div> -->
 
     <!-- <div class="filter__wrapper">
       <a href="/products">Show All</a>
