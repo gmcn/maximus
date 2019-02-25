@@ -1,8 +1,8 @@
 /*!
-Theme Name: starter-theme
-Theme URI: http://underscores.me/
-Author: Underscores.me
-Author URI: http://underscores.me/
+Theme Name: Maximus Crushing and Screening
+Theme URI: https://maximusscreening.com/
+Author: Gary McNally @ Digital Only
+Author URI: https://digital-only.com/
 Description: Description
 Version: 1.0.0
 License: GNU General Public License v2 or later
@@ -110,6 +110,8 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 --------------------------------------------------------------*/
 @import "site/site";
 @import "pages/about";
+@import "pages/news";
+@import "pages/partners";
 @import "pages/contact";
 @import "pages/products";
 @import "pages/careers";
