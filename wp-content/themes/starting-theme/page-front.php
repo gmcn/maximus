@@ -18,7 +18,8 @@ get_header(); ?>
 	include(locate_template("inc/page-front/hero.php"));
 	include(locate_template("inc/page-front/dealers.php"));
 	include(locate_template("inc/page-front/about.php"));
-	include(locate_template("inc/page-front/products.php"));
+	// include(locate_template("inc/page-front/products.php"));
+	include(locate_template("inc/page-front/product-categories.php"));
 	include(locate_template("inc/page-front/quote.php"));
 	?>
 
