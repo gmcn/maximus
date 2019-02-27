@@ -5,8 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class FrmField {
 
-    static $use_cache = true;
-	static $transient_size = 200;
+	public static $use_cache = true;
+	public static $transient_size = 200;
 
 	public static function field_selection() {
 		$fields = array(
@@ -370,7 +370,11 @@ class FrmField {
 		}
 	}
 
-	public static function getOne( $id ) {
+	/**
+	 * @param string|int $id The field id or key.
+	 * @param bool $filter When true, run the frm_field filter.
+	 */
+	public static function getOne( $id, $filter = false ) {
 		if ( empty( $id ) ) {
 			return null;
 		}
@@ -383,6 +387,7 @@ class FrmField {
         $results = FrmDb::check_cache( $id, 'frm_field', $query, 'get_row', 0 );
 
 		if ( empty( $results ) ) {
+			self::filter_field( $filter, $results );
             return $results;
         }
 
@@ -393,15 +398,31 @@ class FrmField {
         }
 
 		self::prepare_options( $results );
+		self::filter_field( $filter, $results );
 
 		return stripslashes_deep( $results );
     }
 
-    /**
-     * Get the field type by key or id
-     * @param int|string The field id or key
+	/**
+	 * @since 3.06.01
+	 * @param bool   $filter When true, run the frm_field filter.
+	 * @param object $results
+	 */
+	private static function filter_field( $filter, &$results ) {
+		if ( $filter ) {
+			/**
+			 * @since 3.06.01
+			 */
+			$results = apply_filters( 'frm_field', $results );
+		}
+	}
+
+	/**
+	 * Get the field type by key or id
+	 *
+	 * @param int|string The field id or key
 	 * @param mixed $col The name of the column in the fields database table
-     */
+	 */
     public static function get_type( $id, $col = 'type' ) {
         $field = FrmDb::check_cache( $id, 'frm_field' );
         if ( $field ) {
@@ -637,6 +658,7 @@ class FrmField {
 
 	/**
 	 * Unserialize all the serialized field data
+	 *
 	 * @since 2.0
 	 */
 	private static function prepare_options( &$results ) {
@@ -649,6 +671,7 @@ class FrmField {
 	/**
 	 * If a form has too many fields, thay won't all save into a single transient.
 	 * We'll break them into groups of 200
+	 *
 	 * @since 2.0.1
 	 */
 	private static function get_fields_from_transients( $form_id, $args ) {
@@ -659,6 +682,7 @@ class FrmField {
 
 	/**
 	 * Called by get_fields_from_transients
+	 *
 	 * @since 2.0.1
 	 */
 	private static function get_next_transient( &$fields, $base_name, $next = 0 ) {
@@ -678,6 +702,7 @@ class FrmField {
 
 	/**
 	 * Save the transients in chunks for large forms
+	 *
 	 * @since 2.0.1
 	 */
 	private static function set_field_transient( &$fields, $form_id, $next = 0, $args = array() ) {
@@ -765,7 +790,8 @@ class FrmField {
 		$field_type = self::get_field_type( $field );
 		$data_type = self::get_option( $field, 'data_type' );
 
-		return self::is_option_true( $field, 'multiple' ) && ( ( $field_type == 'select' || ( $field_type == 'data' && $data_type == 'select' ) ) );
+		$is_multiple = self::is_option_true( $field, 'multiple' ) && ( ( $field_type == 'select' || ( $field_type == 'data' && $data_type == 'select' ) ) );
+		return apply_filters( 'frm_is_multiple_select', $is_multiple, $field );
 	}
 
 	/**
@@ -862,14 +888,14 @@ class FrmField {
 		return ( $is_repeating_field && self::is_option_true( $field, 'repeat' ) );
 	}
 
-    /**
-     * @param string $key
-     * @return int field id
-     */
+	/**
+	 * @param string $key
+	 * @return int field id
+	 */
 	public static function get_id_by_key( $key ) {
-        $id = FrmDb::get_var( 'frm_fields', array( 'field_key' => sanitize_title( $key ) ) );
-        return $id;
-    }
+		$id = FrmDb::get_var( 'frm_fields', array( 'field_key' => sanitize_title( $key ) ) );
+		return (int) $id;
+	}
 
 	/**
 	 * @param string $id

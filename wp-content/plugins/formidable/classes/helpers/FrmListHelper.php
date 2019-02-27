@@ -120,8 +120,8 @@ class FrmListHelper {
 
 		if ( empty( $this->modes ) ) {
 			$this->modes = array(
-				'list'    => __( 'List View' ),
-				'excerpt' => __( 'Excerpt View' ),
+				'list'    => __( 'List View', 'formidable' ),
+				'excerpt' => __( 'Excerpt View', 'formidable' ),
 			);
 		}
 	}
@@ -142,6 +142,7 @@ class FrmListHelper {
 
 	/**
 	 * Prepares the list of items for displaying.
+	 *
 	 * @uses FrmListHelper::set_pagination_args()
 	 *
 	 * @since 2.0.18
@@ -236,7 +237,7 @@ class FrmListHelper {
 	 * @access public
 	 */
 	public function no_items() {
-		esc_html_e( 'No items found.' );
+		esc_html_e( 'No items found.', 'formidable' );
 	}
 
 	/**
@@ -253,18 +254,11 @@ class FrmListHelper {
 			return;
 		}
 
-		$input_id = $input_id . '-search-input';
-
 		foreach ( array( 'orderby', 'order' ) as $search_params ) {
 			$this->hidden_search_inputs( $search_params );
 		}
-?>
-<p class="search-box">
-	<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ) ?>"><?php echo wp_kses( $text, array() ); ?>:</label>
-	<input type="search" id="<?php echo esc_attr( $input_id ) ?>" name="s" value="<?php _admin_search_query(); ?>" />
-	<?php submit_button( $text, 'button', '', false, array( 'id' => 'search-submit' ) ); ?>
-</p>
-<?php
+
+		FrmAppHelper::show_search_box( $text, $input_id );
 	}
 
 	private function hidden_search_inputs( $param_name ) {
@@ -368,9 +362,9 @@ class FrmListHelper {
 			return;
 		}
 
-		echo "<label for='bulk-action-selector-" . esc_attr( $which ) . "' class='screen-reader-text'>" . esc_attr__( 'Select bulk action' ) . '</label>';
+		echo "<label for='bulk-action-selector-" . esc_attr( $which ) . "' class='screen-reader-text'>" . esc_attr__( 'Select bulk action', 'formidable' ) . '</label>';
 		echo "<select name='action" . esc_attr( $two ) . "' id='bulk-action-selector-" . esc_attr( $which ) . "'>\n";
-		echo "<option value='-1' selected='selected'>" . esc_attr__( 'Bulk Actions' ) . "</option>\n";
+		echo "<option value='-1' selected='selected'>" . esc_attr__( 'Bulk Actions', 'formidable' ) . "</option>\n";
 
 		foreach ( $this->_actions as $name => $title ) {
 			$class = 'edit' == $name ? ' class="hide-if-no-js"' : '';
@@ -380,7 +374,7 @@ class FrmListHelper {
 
 		echo "</select>\n";
 
-		submit_button( __( 'Apply' ), 'action', '', false, array( 'id' => "doaction$two" ) );
+		submit_button( __( 'Apply', 'formidable' ), 'action', '', false, array( 'id' => "doaction$two" ) );
 		echo "\n";
 	}
 
@@ -445,7 +439,7 @@ class FrmListHelper {
 		}
 		$out .= '</div>';
 
-		$out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
+		$out .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details', 'formidable' ) . '</span></button>';
 
 		return $out;
 	}
@@ -551,7 +545,7 @@ class FrmListHelper {
 			$infinite_scroll = $this->_pagination_args['infinite_scroll'];
 		}
 
-		$output = '<span class="displaying-num">' . sprintf( _n( '%s item', '%s items', $total_items ), number_format_i18n( $total_items ) ) . '</span>';
+		$output = '<span class="displaying-num">' . sprintf( _n( '%s item', '%s items', $total_items, 'formidable' ), number_format_i18n( $total_items ) ) . '</span>';
 
 		$current = $this->get_pagenum();
 
@@ -582,17 +576,17 @@ class FrmListHelper {
 
 		if ( 'bottom' == $which ) {
 			$html_current_page  = $current;
-			$total_pages_before = '<span class="screen-reader-text">' . __( 'Current Page' ) . '</span><span id="table-paging" class="paging-input">';
+			$total_pages_before = '<span class="screen-reader-text">' . __( 'Current Page', 'formidable' ) . '</span><span id="table-paging" class="paging-input">';
 		} else {
 			$html_current_page = sprintf(
 				"%s<input class='current-page' id='current-page-selector' type='text' name='paged' value='%s' size='%d' aria-describedby='table-paging' />",
-				'<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page' ) . '</label>',
+				'<label for="current-page-selector" class="screen-reader-text">' . __( 'Current Page', 'formidable' ) . '</label>',
 				$current,
 				strlen( $total_pages )
 			);
 		}
 		$html_total_pages = sprintf( "<span class='total-pages'>%s</span>", number_format_i18n( $total_pages ) );
-		$page_links[] = $total_pages_before . sprintf( _x( '%1$s of %2$s', 'paging' ), $html_current_page, $html_total_pages ) . $total_pages_after;
+		$page_links[] = $total_pages_before . sprintf( _x( '%1$s of %2$s', 'paging', 'formidable' ), $html_current_page, $html_total_pages ) . $total_pages_after;
 
 		$page_links[] = $this->add_page_link(
 			array(
@@ -656,10 +650,10 @@ class FrmListHelper {
 
 	private function link_label( $link ) {
 		$labels = array(
-			'first' => __( 'First page' ),
-			'last'  => __( 'Last page' ),
-			'prev'  => __( 'Previous page' ),
-			'next'  => __( 'Next page' ),
+			'first' => __( 'First page', 'formidable' ),
+			'last'  => __( 'Last page', 'formidable' ),
+			'prev'  => __( 'Previous page', 'formidable' ),
+			'next'  => __( 'Next page', 'formidable' ),
 		);
 		return $labels[ $link ];
 	}
@@ -680,14 +674,14 @@ class FrmListHelper {
 	}
 
 	private function add_disabled_link( $label ) {
-		return '<span class="tablenav-pages-navspan" aria-hidden="true">' . $label . '</span>';
+		return '<span class="tablenav-pages-navspan button disabled" aria-hidden="true">' . $label . '</span>';
 	}
 
 	private function add_active_link( $atts ) {
 		$url = esc_url( add_query_arg( 'paged', $atts['number'], $this->current_url() ) );
 		$label = $this->link_label( $atts['page'] );
 		return sprintf(
-			"<a class='%s-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
+			"<a class='button %s-page' href='%s'><span class='screen-reader-text'>%s</span><span aria-hidden='true'>%s</span></a>",
 			$atts['page'],
 			$url,
 			$label,
@@ -753,7 +747,7 @@ class FrmListHelper {
 		// If the primary column doesn't exist fall back to the
 		// first non-checkbox column.
 		if ( ! isset( $columns[ $default ] ) ) {
-			$default = FrmListHelper::get_default_primary_column_name();
+			$default = self::get_default_primary_column_name();
 		}
 
 		/**
@@ -874,7 +868,7 @@ class FrmListHelper {
 
 		if ( ! empty( $columns['cb'] ) ) {
 			static $cb_counter = 1;
-			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All' ) . '</label>'
+			$columns['cb'] = '<label class="screen-reader-text" for="cb-select-all-' . $cb_counter . '">' . __( 'Select All', 'formidable' ) . '</label>'
 				. '<input id="cb-select-all-' . esc_attr( $cb_counter ) . '" type="checkbox" />';
 			$cb_counter++;
 		}
@@ -1098,7 +1092,7 @@ class FrmListHelper {
 	 * @return string The row actions output. In this case, an empty string.
 	 */
 	protected function handle_row_actions( $item, $column_name, $primary ) {
-		return $column_name == $primary ? '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details' ) . '</span></button>' : '';
+		return $column_name == $primary ? '<button type="button" class="toggle-row"><span class="screen-reader-text">' . esc_html__( 'Show more details', 'formidable' ) . '</span></button>' : '';
  	}
 
 	/**
@@ -1123,7 +1117,7 @@ class FrmListHelper {
 
 		if ( isset( $this->_pagination_args['total_items'] ) ) {
 			$response['total_items_i18n'] = sprintf(
-				_n( '%s item', '%s items', $this->_pagination_args['total_items'] ),
+				_n( '%s item', '%s items', $this->_pagination_args['total_items'], 'formidable' ),
 				number_format_i18n( $this->_pagination_args['total_items'] )
 			);
 		}

@@ -110,7 +110,7 @@ class FrmFormsHelper {
 			        $args['form'] = $form->id;
 				}
                 ?>
-				<li><a href="<?php echo esc_url( isset( $base ) ? add_query_arg( $args, $base ) : add_query_arg( $args ) ); ?>" tabindex="-1"><?php echo esc_html( empty( $form->name ) ? __( '(no title)' ) : FrmAppHelper::truncate( $form->name, 60 ) ); ?></a></li>
+				<li><a href="<?php echo esc_url( isset( $base ) ? add_query_arg( $args, $base ) : add_query_arg( $args ) ); ?>" tabindex="-1"><?php echo esc_html( empty( $form->name ) ? __( '(no title)', 'formidable' ) : FrmAppHelper::truncate( $form->name, 60 ) ); ?></a></li>
 			<?php
 				unset( $form );
 			}
@@ -119,6 +119,25 @@ class FrmFormsHelper {
 		</li>
         <?php
     }
+
+	/**
+	 * @since 3.05
+	 * @param array $values - The form array
+	 */
+	public static function builder_submit_button( $values ) {
+		$page_action = FrmAppHelper::get_param( 'frm_action' );
+		$label = ( $page_action == 'edit' || $page_action == 'update' ) ? __( 'Update', 'formidable' ) : __( 'Create', 'formidable' );
+
+		?>
+		<div class="postbox">
+			<p class="inside">
+				<button class="frm_submit_<?php echo esc_attr( ( isset( $values['ajax_load'] ) && $values['ajax_load'] ) ? '' : 'no_' ); ?>ajax button-primary frm_button_submit" type="button">
+					<?php echo esc_html( $label ); ?>
+				</button>
+			</p>
+		</div>
+		<?php
+	}
 
 	public static function get_sortable_classes( $col, $sort_col, $sort_dir ) {
 		echo ( $sort_col == $col ) ? 'sorted' : 'sortable';
@@ -157,7 +176,12 @@ class FrmFormsHelper {
 	 * @return string
 	 */
 	public static function get_invalid_error_message( $args ) {
-		$frm_settings = FrmAppHelper::get_settings();
+		$settings_args = $args;
+		if ( isset( $args['form'] ) ) {
+			$settings_args['current_form'] = $args['form']->id;
+		}
+
+		$frm_settings = FrmAppHelper::get_settings( $settings_args );
 		$invalid_msg = do_shortcode( $frm_settings->invalid_msg );
 		return apply_filters( 'frm_invalid_error_message', $invalid_msg, $args );
 	}
@@ -198,7 +222,6 @@ class FrmFormsHelper {
 			'form_id'        => '',
 			'logged_in'      => '',
 			'editable'       => '',
-			'default_template' => 0,
 			'is_template'    => 0,
 			'status'         => 'draft',
 			'parent_form_id' => 0,
@@ -229,7 +252,6 @@ class FrmFormsHelper {
 		}
 
 		$values['form_key'] = isset( $post_values['form_key'] ) ? $post_values['form_key'] : $record->form_key;
-		$values['default_template'] = isset( $post_values['default_template'] ) ? $post_values['default_template'] : $record->default_template;
 		$values['is_template'] = isset( $post_values['is_template'] ) ? $post_values['is_template'] : $record->is_template;
         $values['status'] = $record->status;
 
@@ -360,6 +382,7 @@ BEFORE_HTML;
 
     /**
      * Automatically add end section fields if they don't exist (2.0 migration)
+	 *
      * @since 2.0
      *
      * @param boolean $reset_fields
@@ -500,6 +523,7 @@ BEFORE_HTML;
 	/**
 	 * If the Formidable styling isn't being loaded,
 	 * use inline styling to hide the element
+	 *
 	 * @since 2.03.05
 	 */
 	public static function maybe_hide_inline() {
@@ -755,7 +779,7 @@ BEFORE_HTML;
         }
 
         if ( $form_id ) {
-			$val = '<a href="' . esc_url( admin_url( 'admin.php?page=formidable&frm_action=edit&id=' . $form_id ) ) . '">' . ( '' == $name ? __( '(no title)' ) : FrmAppHelper::truncate( $name, 40 ) ) . '</a>';
+			$val = '<a href="' . esc_url( admin_url( 'admin.php?page=formidable&frm_action=edit&id=' . $form_id ) ) . '">' . ( '' == $name ? __( '(no title)', 'formidable' ) : FrmAppHelper::truncate( $name, 40 ) ) . '</a>';
 	    } else {
 	        $val = '';
 	    }
@@ -872,7 +896,7 @@ BEFORE_HTML;
 			),
 			'frm_scroll_box' => array(
 				'label'      => __( 'Scroll Box', 'formidable' ),
-				'title'      => __( 'If you have many checkbox or radio button options, you may add this class to allow your user to easily scroll through the options.', 'formidable' ),
+				'title'      => __( 'If you have many checkbox or radio button options, you may add this class to allow your user to easily scroll through the options. Or add a scrolling area around content in an HTML field.', 'formidable' ),
 			),
 			'frm_capitalize' => array(
 				'label'      => __( 'Capitalize', 'formidable' ),

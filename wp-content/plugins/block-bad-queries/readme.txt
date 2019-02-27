@@ -10,9 +10,9 @@ Author URI: https://plugin-planet.com/
 Contributors: specialk, aldolat, WpBlogHost, jameswilkes, juliobox, lernerconsult
 Donate link: https://monzillamedia.com/donate.html
 Requires at least: 4.1
-Tested up to: 4.9
-Stable tag: 20180821
-Version: 20180821
+Tested up to: 5.1
+Stable tag: 20190220
+Version: 20190220
 Requires PHP: 5.2
 Text Domain: block-bad-queries
 Domain Path: /languages
@@ -53,7 +53,7 @@ The fastest firewall plugin for WordPress.
 
 This plugin does not collect any user data. So it does _not_ do anything to make your site _less_ compliant with GDPR. I have done my best to ensure that this plugin is 100% GDPR compliant, but I'm not a lawyer so can't guarantee anything. To determine if your site is GDPR compliant, please consult an attorney.
 
-> Works perfectly with or without Gutenberg
+> Works perfectly with or without Gutenberg Block Editor
 
 **Pro Version**
 
@@ -78,6 +78,11 @@ Once active, BBQ automically blocks bad queries to protect your site against mal
 * To block patterns otherwise allowed by BBQ, check out the [BBQ Blacklist plugin](https://perishablepress.com/bbq-whitelist-blacklist/)
 
 Note that the [Pro version of BBQ](https://plugin-planet.com/bbq-pro/) makes it possible to customize patterns (add, edit, remove) directly via the plugin settings, with a click. 
+
+
+**Like the plugin?**
+
+If you like BBQ, please take a moment to [give a 5-star rating](https://wordpress.org/support/plugin/block-bad-queries/reviews/?rate=5#new-post). It helps to keep development and support going strong. Thank you!
 
 
 
@@ -182,6 +187,16 @@ Links, tweets and likes also appreciated. Thank you! :)
 
 
 == Changelog ==
+
+**2019/02/20**
+
+* Tests on WordPress 5.1
+
+**2018/11/17**
+
+* Adds homepage link to Plugins screen
+* Updates default translation template
+* Tests on WordPress 5.0
 
 **2018/08/21**
 

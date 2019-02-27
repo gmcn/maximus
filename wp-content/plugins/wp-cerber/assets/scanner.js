@@ -1,5 +1,5 @@
 /**
- *	Copyright (C) 2015-18 CERBER TECH INC., https://wpcerber.com
+ *	Copyright (C) 2015-19 CERBER TECH INC., https://wpcerber.com
  */
 jQuery(document).ready(function ($) {
 
@@ -32,6 +32,7 @@ jQuery(document).ready(function ($) {
     var crb_scan_browser = $("#crb-browse-files");
 
     var crb_txt_strings = [];
+    var crb_the_file;
 
     cerber_scan_load_data();
 
@@ -51,7 +52,8 @@ jQuery(document).ready(function ($) {
                 //cerber_scan_controls('disabled');
                 break;
             case 'delete_file':
-                cerber_delete_files();
+            case 'ignore_add_file':
+                cerber_scan_bulk_files(operation);
                 break;
             case 'full-paths':
                 cerber_toggle_file_name(event.target);
@@ -87,7 +89,7 @@ jQuery(document).ready(function ($) {
             $(this).html($(this).data('init'));
         });
 
-        crb_scan_message.slideDown().html(crb_scan_msg_steps[1]);
+        crb_scan_message.slideDown().html(crb_scan_msg_steps[0]);
         cerber_update_bar(true);
         cerber_scan_controls('scanning');
         crb_scan_browser.find('tr').not('.crb-scan-container').remove();
@@ -169,7 +171,7 @@ jQuery(document).ready(function ($) {
             alert(msg);
         }
         else if (!crb_user_stop) {
-            cerber_popup_show('The scan is finished', '<p style="text-align: center;">The scan is finished. Please review the results.</p>', 350, 180);
+            cerber_popup_show('The scan is finished', '<p style="text-align: center;">The scan is finished. Please review the results.</p>');
         }
     }
 
@@ -314,9 +316,10 @@ jQuery(document).ready(function ($) {
                     // Single file issue ----------------
                     rbox = '';
                     if (single_issue.data.fd_allowed) {
-                        rbox = '<input type="checkbox" name="" data-file_name="' + full_name + '">';
+                        //rbox = '<input type="checkbox" name="" data-file_name="' + full_name + '">';
+                        rbox = '<input type="checkbox">';
                     }
-                    section_items.push('<tr class="crb-item-file" data-itype="' + issue_type_id + '"><td>' + rbox + '</td><td data-file-name="' + full_name + '" data-short="' + f_name + '" class="' + name_classes + '">' + f_name + '</td><td>' + cerber_get_issue_txt(index, single_issue) + '</td><td class="risk' + risk + '"><span>' + crb_scan_msg_risks[risk] + '</span></td><td>' + isize + '</td><td>' + itime + '</td></tr>');
+                    section_items.push('<tr class="crb-item-file" data-itype="' + issue_type_id + '" data-file_name="' + full_name + '"><td>' + rbox + '</td><td data-short="' + f_name + '" class="' + name_classes + '">' + f_name + '</td><td>' + cerber_get_issue_txt(index, single_issue) + '</td><td class="risk' + risk + '"><span>' + crb_scan_msg_risks[risk] + '</span></td><td>' + isize + '</td><td>' + itime + '</td></tr>');
                 }
 
                 crb_issues_counter[risk]++;
@@ -422,7 +425,7 @@ jQuery(document).ready(function ($) {
         if (issue.details.xdata && issue.details.xdata.length) {
             attr += ' data-idx="' + index + '" ';
         }
-        if (attr || (issue[0] > 14 && issue[0] < 55)) {
+        if (attr || (issue[0] > 14 && issue[0] < 50)) {
             ret = '<a href="#" ' + attr + '>' + ret + '</a>';
         }
 
@@ -526,21 +529,38 @@ jQuery(document).ready(function ($) {
         return obj;
     }());
 
-    function cerber_delete_files() {
-        var files_to_delete = crb_scan_browser.find('input[type=checkbox]:checked');
-        if (!files_to_delete.length) {
+    function cerber_scan_bulk_files(operation) {
+        var selected = crb_scan_browser.find('input[type=checkbox]:checked');
+        if (!selected.length) {
             return;
         }
-        if (!confirm('Are you sure you want to delete selected files?')) {
+        if (!cerber_user_confirm(crb_scan_msg_misc[operation][0])) {
+            return;
+        }
+        var files = [];
+        $.each(selected, function () {
+            files.push($(this).closest('tr').data('file_name'));
+        });
+        cerber_scan_ajax_operation(files, operation);
+    }
+
+    function cerber_scan_ajax_operation(files, operation) {
+        if (!files.length) {
             return;
         }
         var formData = new FormData();
-        formData.append('action', 'cerber_scan_delete_files');
+        formData.append('action', 'cerber_scan_bulk_files');
         formData.append('ajax_nonce', crb_ajax_nonce);
         formData.append('scan_id', window.crb_scan_id);
-        $.each(files_to_delete, function () {
-            formData.append('files[]', $(this).data('file_name'));
-        });
+        formData.append('scan_file_operation', operation);
+        if (files instanceof Array) {
+            $.each(files, function (index, value) {
+                formData.append('files[]', value);
+            });
+        }
+        else {
+            formData.append('files[]', files);
+        }
         $.ajax({
             url: ajaxurl,
             type: 'POST',
@@ -549,26 +569,26 @@ jQuery(document).ready(function ($) {
             processData: false,
             dataType: 'json'
         }).done(function (server_response) {
-            var e = '', title = '';
+            var msg = '', title = '';
             if (server_response.errors && server_response.errors.length) {
-                e = '<div style="color: #c91619;"><b>Errors occurred during deletion</b><p>' + server_response.errors.join('</p><p>') + '</p></div>';
+                title = crb_scan_msg_misc['file_error'];
+                msg = '<div style="color: #c91619;"><p><b>' + crb_scan_msg_misc['file_error'] + '</b></p><p>' + server_response.errors.join('</p><p>') + '</p></div>';
             }
-            if (server_response.deleted && server_response.deleted.length) {
-                e = e + '<div><b>These files has been deleted</b><p>' + server_response.deleted.join('</p><p>') + '</p></div>';
+            if (server_response.processed && server_response.processed.length) {
+                msg = msg + '<div><p><b>' + crb_scan_msg_misc[operation][1] + '</b></p><p>' + server_response.processed.join('</p><p>') + '</p></div>';
             }
-            if (files_to_delete.length === server_response.number) {
-                title = 'All files are moved to the quarantine and isolated';
+            if (!title) {
+                title = crb_scan_msg_misc['all_ok'];
             }
-            else {
-                title = 'Deleting files';
-            }
-            cerber_popup_show(title, e);
 
-            if (server_response.deleted && server_response.deleted.length) {
-                $.each(server_response.deleted, function (index, file_name) {
-                    crb_scan_browser.find('td[data-file-name="' + file_name + '"]').parent().remove();
+            if (server_response.processed && server_response.processed.length) {
+                $.each(server_response.processed, function (index, file_name) {
+                    //crb_scan_browser.find('td[data-file-name="' + file_name + '"]').parent().remove();
+                    crb_scan_browser.find('tr[data-file_name="' + file_name + '"]').remove();
                 });
             }
+
+            cerber_popup_show(title, msg);
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
             cerber_popup_show('Something went wrong on the server', jqXHR.responseText);
@@ -576,26 +596,18 @@ jQuery(document).ready(function ($) {
     }
 
     function cerber_toggle_file_name(control) {
-        var items = crb_scan_browser.find('.crb-item-file td[data-file-name]');
-        if (!window.cerber_full_toggler) {
-            window.cerber_full_toggler = 1;
+        window.cerber_name_toggler = (!window.cerber_name_toggler) ? 1 : 0;
+        var full_name, td;
+        if (window.cerber_name_toggler) {
+            $('.crb-item-file').each(function () {
+                full_name = $(this).data('file_name');
+                $(this).find('td:nth-child(2)').html(full_name);
+            });
         }
         else {
-            window.cerber_full_toggler = 0;
-        }
-        if (items.length) {
-            $.each(items, function () {
-                if ($(this).data('file-name') === '') {
-                    return;
-                }
-                if (window.cerber_full_toggler) {
-                    $(this).html($(this).data('file-name'));
-                    //$(control).text('Hide full paths');
-                }
-                else {
-                    $(this).html($(this).data('short'));
-                    //$(control).text('Show full paths');
-                }
+            $('.crb-item-file').each(function () {
+                td = $(this).find('td:nth-child(2)');
+                td.html($(td).data('short'));
             });
         }
     }
@@ -617,15 +629,16 @@ jQuery(document).ready(function ($) {
 
     function cerber_issue_popup(element) {
 
-        var info = [], w, h;
+        var info = [];
         //var section = $(element).closest('tr').prevAll('.crb-scan-section:first');
         var section = cerber_get_section(element);
         var section_type = section.data('setype');
         var itype = cerber_get_itype(element);
+        crb_the_file = cerber_get_ifile(element);
 
         if (itype === 15 || itype === 18) {
             var section_name = section.data('section-name');
-            cerber_popup_show($(element).text(), cerber_get_issue_explain(itype, section_name));
+            cerber_popup_show($(element).text(), cerber_get_issue_explain(itype, section_name), true);
             return;
         }
 
@@ -637,8 +650,6 @@ jQuery(document).ready(function ($) {
 
         var d = cerber_xdata_info(section.prop('id'), $(element).data('idx'));
         if (d.length) {
-            w = window.innerWidth * 0.4;
-            h = window.innerHeight * 0.6;
             info.push(d);
         }
 
@@ -646,7 +657,7 @@ jQuery(document).ready(function ($) {
             info.push(cerber_get_issue_explain(itype));
         }
 
-        cerber_popup_show($(element).text(), info, w, h);
+        cerber_popup_show($(element).text(), info, true);
 
     }
 
@@ -678,7 +689,7 @@ jQuery(document).ready(function ($) {
                 $.each(e[2], function (index, s) {
                     ls.push('<code>Line ' + s[2] + ': <b>' + s[0] + '</b></code>');
                 });
-                regs.push(ls.join('</br>') + '<p>' + crb_txt_strings[e[0]][e[1]] + ' (' + e[1] + ')' + '</p>');
+                regs.push(ls.join('<br />') + '<p>' + crb_txt_strings[e[0]][e[1]] + ' (' + e[1] + ')' + '</p>');
             }
         });
 
@@ -723,6 +734,9 @@ jQuery(document).ready(function ($) {
         return $(e).closest('tr').prevAll('.crb-scan-section:first');
     }
 
+    function cerber_get_ifile(e) {
+        return $(e).closest('tr').data('file_name');
+    }
 
     /*
     function cerber_load_strings() {
@@ -817,10 +831,11 @@ jQuery(document).ready(function ($) {
     // File viewer
 
     crb_scan_browser.on('click', 'td', function (event) {
-        if (typeof $(this).data('file-name') === "undefined" || $(this).data('file-name') === '') {
+        if (typeof $(this).data('short') === "undefined" || $(this).data('short') === '') {
             return;
         }
-        var file_name = $(this).data('file-name');
+        //var file_name = $(this).data('file-name');
+        var file_name = $(this).closest('tr').data('file_name');
 
         var view_width = window.innerWidth * 0.8;
         var view_height = window.innerHeight * 0.8;
@@ -833,17 +848,15 @@ jQuery(document).ready(function ($) {
 
 
 
+    //
+
+    function cerber_user_confirm(message) {
+        return confirm(message);
+    }
 
     // Simple popups based on WP thickbox
 
-    function cerber_popup_show(title, message, w , h) {
-        if (typeof w === 'undefined') {
-            w = 420; //600;
-        }
-        if (typeof h === 'undefined') {
-            h = 320; // 350;
-        }
-
+    function cerber_popup_show(title, message, b) {
         if (typeof message !== 'string'){
             message = message.filter(function (e) {
                 return (e !== 'undefined' && e !== null && e !== '');
@@ -851,22 +864,36 @@ jQuery(document).ready(function ($) {
             message = '<div>' + message.join('</div><div>') + '</div>';
         }
 
-        if (message.length > 450) {
-            w = window.innerWidth * 0.4;
-            h = window.innerHeight * 0.6;
-            if (w < 400) w = window.innerWidth * 0.9;
-            if (h < 300) h = window.innerHeight * 0.9;
-        }
+        wmax = (window.innerWidth < 600) ? window.innerWidth * 0.9 : window.innerWidth * 0.5;
+        hmax = (window.innerHeight < 600) ? window.innerHeight * 0.9 : window.innerHeight * 0.5;
+
+        w = 200 + message.length;
+        h = 140 + Math.round(message.length / 2);
+        w = (w < 400) ? 400 : w;
+        h = (h < 170) ? 170 : h;
+        w = (w > wmax) ? wmax : w;
+        h = (h > hmax) ? hmax : h;
 
         var max = h - 70;
 
-        var button = '<p style="text-align: center; position: absolute; bottom: 20px; left:0; right:0; margin: auto;"><input type="button" value=" OK " class="button button-primary"></p>';
+        var button = '<input type="button" value="OK" class="button button-primary">';
+        if (b) {
+            button += '<input type="button" id="add2ignore" value=" Add to ignore list " class="button button-secondary">';
+        }
 
         var popup = cerber_init_popup('crb-popup-box');
-        popup.html('<div class="crb-popup-inner" style="max-height: ' + max + 'px;">' + message + '</div>' + button);
+        popup.html('<div class="crb-popup-inner" style="max-height: ' + max + 'px;">' + message + '</div>' +
+            '<p class="crb-popup-controls">'
+            + button
+            + '</p>');
+        $('#TB_window .crb-popup-inner').html('');
+        //popup.find('input[type=button]').off('click');
         popup.find('input[type=button]').on('click', function (event) {
-            //e.preventDefault();
-            cerber_popup_close();
+            //$(this).off('click');
+            /*event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();*/
+            cerber_popup_close(this);
         });
 
         tb_show(title, '#TB_inline?width=' + w + '&height=' + h + '&inlineId=crb-popup-box');
@@ -898,8 +925,11 @@ jQuery(document).ready(function ($) {
         return body.find('#' + id);
     }
 
-    function cerber_popup_close() {
+    function cerber_popup_close(element) {
         tb_remove();
+        if (element.id === 'add2ignore') {
+            cerber_scan_ajax_operation(crb_the_file, 'ignore_add_file');
+        }
     }
 
 });

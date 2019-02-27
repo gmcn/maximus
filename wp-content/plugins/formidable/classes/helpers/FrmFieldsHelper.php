@@ -62,6 +62,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Prepare field while creating a new entry
+	 *
 	 * @since 3.0
 	 */
 	public static function prepare_new_front_field( &$field_array, $field, $args = array() ) {
@@ -71,6 +72,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Prepare field while editing an entry
+	 *
 	 * @since 3.0
 	 */
 	public static function prepare_edit_front_field( &$field_array, $field, $entry_id = 0, $args = array() ) {
@@ -81,6 +83,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Prepare field while creating a new entry
+	 *
 	 * @since 3.0
 	 */
 	private static function prepare_front_field( &$field_array, $field, $args ) {
@@ -162,7 +165,7 @@ class FrmFieldsHelper {
 		}
 
 		if ( '' == $field_array['custom_html'] ) {
-			$field_array['custom_html'] = FrmFieldsHelper::get_default_html( $field->type );
+			$field_array['custom_html'] = self::get_default_html( $field->type );
 		}
 	}
 
@@ -322,24 +325,6 @@ class FrmFieldsHelper {
 	}
 
 	/**
-	 * @deprecated 3.0
-	 * @codeCoverageIgnore
-	 *
-	 * @param string $html
-	 * @param array $field
-	 * @param array $errors
-	 * @param object $form
-	 * @param array $args
-	 *
-	 * @return string
-	 */
-	public static function replace_shortcodes( $html, $field, $errors = array(), $form = false, $args = array() ) {
-		_deprecated_function( __FUNCTION__, '3.0', 'FrmFieldType::prepare_field_html' );
-		$field_obj = FrmFieldFactory::get_field_type( $field['type'], $field );
-		return $field_obj->prepare_field_html( compact( 'errors', 'form' ) );
-	}
-
-	/**
 	 * @since 3.0
 	 *
 	 * @param array $atts
@@ -357,6 +342,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Get the class to use for the label position
+	 *
 	 * @since 2.05
 	 */
 	public static function &label_position( $position, $field, $form ) {
@@ -384,29 +370,12 @@ class FrmFieldsHelper {
 
 	/**
 	 * Check if this field type allows placeholders
+	 *
 	 * @since 2.05
 	 */
 	public static function is_placeholder_field_type( $type ) {
 		return ! in_array( $type, array( 'select', 'radio', 'checkbox', 'hidden', 'file' ) );
 	}
-
-	/**
-	 * @deprecated 3.0
-	 * @codeCoverageIgnore
-	 */
-	public static function remove_inline_conditions( $no_vars, $code, $replace_with, &$html ) {
-		_deprecated_function( __FUNCTION__, '3.0', 'FrmShortcodeHelper::remove_inline_conditions' );
-		FrmShortcodeHelper::remove_inline_conditions( $no_vars, $code, $replace_with, $html );
-	}
-
-	/**
-	 * @deprecated 3.0
-	 * @codeCoverageIgnore
-	 */
-	public static function get_shortcode_tag( $shortcodes, $short_key, $args ) {
-		_deprecated_function( __FUNCTION__, '3.0', 'FrmShortcodeHelper::get_shortcode_tag' );
-        return FrmShortcodeHelper::get_shortcode_tag( $shortcodes, $short_key, $args );
-    }
 
 	public static function get_checkbox_id( $field, $opt_key ) {
 		$id = $field['id'];
@@ -415,14 +384,6 @@ class FrmFieldsHelper {
 		}
 		return 'frm_checkbox_' . $id . '-' . $opt_key;
 	}
-
-	/**
-	 * @deprecated 3.0
-	 * @codeCoverageIgnore
-	 */
-	public static function display_recaptcha( $field ) {
-		_deprecated_function( __FUNCTION__, '3.0', 'FrmFieldCaptcha::field_input' );
-    }
 
 	public static function show_single_option( $field ) {
 		if ( ! is_array( $field['options'] ) ) {
@@ -477,7 +438,7 @@ class FrmFieldsHelper {
 
 		$link = sprintf(
 			esc_html__( 'Please add options from the WordPress "%1$s" page', 'formidable' ),
-			'<a href="' . esc_url( admin_url( 'edit-tags.php?taxonomy=' . $tax->name ) ) . '" target="_blank">' . ( empty( $tax->labels->name ) ? esc_html__( 'Categories' ) : $tax->labels->name ) . '</a>'
+			'<a href="' . esc_url( admin_url( 'edit-tags.php?taxonomy=' . $tax->name ) ) . '" target="_blank">' . ( empty( $tax->labels->name ) ? esc_html__( 'Categories', 'formidable' ) : $tax->labels->name ) . '</a>'
 		);
 		unset( $tax );
 
@@ -518,6 +479,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Trim and sanitize the values
+	 *
 	 * @since 2.05
 	 */
 	private static function get_value_for_comparision( $value ) {
@@ -565,6 +527,7 @@ class FrmFieldsHelper {
 
     /**
      * Replace a few basic shortcodes and field ids
+	 *
      * @since 2.0
      * @return string
      */
@@ -637,6 +600,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Prevent shortcodes in fields from being processed
+	 *
 	 * @since 3.01.02
 	 *
 	 * @param array $atts - includes entry object
@@ -830,6 +794,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Get a value from the user profile from the user ID
+	 *
 	 * @since 3.0
 	 */
 	public static function get_user_display_name( $user_id, $user_info = 'display_name', $args = array() ) {
@@ -930,7 +895,7 @@ class FrmFieldsHelper {
 
 		// If option is an "other" option and there is a value set for this field,
 		// check if the value belongs in the current "Other" option text field
-		if ( ! FrmFieldsHelper::is_other_opt( $opt_key ) || ! FrmField::is_option_true( $field, 'value' ) ) {
+		if ( ! self::is_other_opt( $opt_key ) || ! FrmField::is_option_true( $field, 'value' ) ) {
 			return $other_val;
 		}
 
@@ -1032,7 +997,7 @@ class FrmFieldsHelper {
 		//Set up name for other field
 		$other_args['name'] = str_replace( '[]', '', $args['field_name'] );
 		$other_args['name'] = preg_replace( '/\[' . $args['field']['id'] . '\]$/', '', $other_args['name'] );
-		$other_args['name'] = $other_args['name'] . '[other]' . '[' . $args['field']['id'] . ']';
+		$other_args['name'] = $other_args['name'] . '[other][' . $args['field']['id'] . ']';
 
 		//Converts item_meta[field_id] => item_meta[other][field_id] and
 		//item_meta[parent][0][field_id] => item_meta[parent][0][other][field_id]
@@ -1043,6 +1008,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * Find the parent and pointer, and get text for "other" text field
+	 *
 	 * @param array $args
 	 * @param array $other_args
 	 *
@@ -1074,6 +1040,7 @@ class FrmFieldsHelper {
 
 	/**
 	 * If this field includes an other option, show it
+	 *
 	 * @param $args array
 	 * @since 2.0.6
 	 */
@@ -1270,9 +1237,9 @@ class FrmFieldsHelper {
 	}
 
 	public static function get_bulk_prefilled_opts( array &$prepop ) {
-		$prepop[ __( 'Countries', 'formidable' ) ] = FrmFieldsHelper::get_countries();
+		$prepop[ __( 'Countries', 'formidable' ) ] = self::get_countries();
 
-        $states = FrmFieldsHelper::get_us_states();
+		$states = self::get_us_states();
 		$state_abv = array_keys( $states );
 		sort( $state_abv );
 		$prepop[ __( 'U.S. State Abbreviations', 'formidable' ) ] = $state_abv;
@@ -1356,16 +1323,48 @@ class FrmFieldsHelper {
 	 * @deprecated 3.0
 	 * @codeCoverageIgnore
 	 */
-	public static function get_default_field_opts( $type, $field = null, $limit = false ) {
-		if ( $limit ) {
-			_deprecated_function( __FUNCTION__, '3.0', 'FrmFieldHelper::get_default_field_options' );
-			$field_options = self::get_default_field_options( $type );
-		} else {
-			_deprecated_function( __FUNCTION__, '3.0', 'FrmFieldHelper::get_default_field' );
-			$field_options = self::get_default_field( $type );
-		}
+	public static function display_recaptcha() {
+		_deprecated_function( __FUNCTION__, '3.0', 'FrmFieldCaptcha::field_input' );
+	}
 
-		return $field_options;
+	/**
+	 * @deprecated 3.0
+	 * @codeCoverageIgnore
+	 */
+	public static function remove_inline_conditions( $no_vars, $code, $replace_with, &$html ) {
+		FrmDeprecated::remove_inline_conditions( $no_vars, $code, $replace_with, $html );
+	}
+
+	/**
+	 * @deprecated 3.0
+	 * @codeCoverageIgnore
+	 */
+	public static function get_shortcode_tag( $shortcodes, $short_key, $args ) {
+		return FrmDeprecated::get_shortcode_tag( $shortcodes, $short_key, $args );
+    }
+
+	/**
+	 * @deprecated 3.0
+	 * @codeCoverageIgnore
+	 *
+	 * @param string $html
+	 * @param array $field
+	 * @param array $errors
+	 * @param object $form
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	public static function replace_shortcodes( $html, $field, $errors = array(), $form = false, $args = array() ) {
+		return FrmDeprecated::replace_shortcodes( $html, $field, $errors, $form, $args );
+	}
+
+	/**
+	 * @deprecated 3.0
+	 * @codeCoverageIgnore
+	 */
+	public static function get_default_field_opts( $type, $field = null, $limit = false ) {
+		return FrmDeprecated::get_default_field_opts( $type, $field, $limit );
 	}
 
 	/**
@@ -1373,15 +1372,6 @@ class FrmFieldsHelper {
 	 * @codeCoverageIgnore
 	 */
 	public static function dropdown_categories( $args ) {
-		_deprecated_function( __FUNCTION__, '2.02.07', 'FrmProPost::get_category_dropdown' );
-
-		if ( FrmAppHelper::pro_is_installed() ) {
-			$args['location'] = 'front';
-			$dropdown = FrmProPost::get_category_dropdown( $args['field'], $args );
-		} else {
-			$dropdown = '';
-		}
-
-		return $dropdown;
+		return FrmDeprecated::dropdown_categories( $args );
 	}
 }

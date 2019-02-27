@@ -186,6 +186,7 @@ class FrmFieldFormHtml {
 	/**
 	 * Add an ID to the description for aria-describedby.
 	 * This ID was added to the HTML in v3.0.
+	 *
 	 * @since 3.0
 	 */
 	private function maybe_add_description_id() {
@@ -212,7 +213,7 @@ class FrmFieldFormHtml {
 	}
 
 	/**
-	 * replace [required_class]
+	 * Replace [required_class]
 	 *
 	 * @since 3.0
 	 */
@@ -266,6 +267,7 @@ class FrmFieldFormHtml {
 
 	/**
 	 * Remove [collapse_this] if it's still included after all processing
+	 *
 	 * @since 3.0
 	 *
 	 * @param string $html
@@ -325,6 +327,10 @@ class FrmFieldFormHtml {
 			unset( $shortcode_atts['class'] );
 		}
 
+		if ( isset( $this->pass_args['errors'][ 'field' . $this->field_id ] ) ) {
+			$shortcode_atts['aria-invalid'] = 'true';
+		}
+
 		$this->field_obj->set_field_column( 'shortcodes', $shortcode_atts );
 
 		return $shortcode_atts;
@@ -345,7 +351,7 @@ class FrmFieldFormHtml {
 	}
 
 	/**
-	 * replace [entry_key]
+	 * Replace [entry_key]
 	 *
 	 * @since 3.0
 	 */

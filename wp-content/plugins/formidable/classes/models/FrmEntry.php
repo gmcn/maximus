@@ -37,10 +37,11 @@ class FrmEntry {
 		return $entry_id;
 	}
 
-    /**
-     * check for duplicate entries created in the last minute
-     * @return boolean
-     */
+	/**
+	 * Check for duplicate entries created in the last minute
+	 *
+	 * @return boolean
+	 */
 	public static function is_duplicate( $new_values, $values ) {
 		$duplicate_entry_time = apply_filters( 'frm_time_to_check_duplicates', 60, $new_values );
 
@@ -69,7 +70,7 @@ class FrmEntry {
         foreach ( $entry_exists as $entry_exist ) {
             $is_duplicate = true;
 
-            //add more checks here to make sure it's a duplicate
+			// make sure it's a duplicate
 			$metas = FrmEntryMeta::get_entry_meta_info( $entry_exist );
             $field_metas = array();
             foreach ( $metas as $meta ) {
@@ -78,11 +79,26 @@ class FrmEntry {
 
             // If prev entry is empty and current entry is not, they are not duplicates
             $filtered_vals = array_filter( $values['item_meta'] );
+			$field_metas   = array_filter( $field_metas );
             if ( empty( $field_metas ) && ! empty( $filtered_vals ) ) {
                 return false;
             }
 
-			$diff = array_diff_assoc( $field_metas, array_map( 'maybe_serialize', $values['item_meta'] ) );
+			// compare serialized values and not arrays
+			$new_meta = array_map( 'maybe_serialize', $filtered_vals );
+
+			if ( $field_metas === $new_meta ) {
+				$is_duplicate = true;
+				break;
+			}
+
+			if ( count( $field_metas ) !== count( $new_meta ) ) {
+				// TODO: compare values saved in the post also
+				$is_duplicate = false;
+				continue;
+			}
+
+			$diff = array_diff_assoc( $field_metas, $new_meta );
             foreach ( $diff as $field_id => $meta_value ) {
 				if ( ! empty( $meta_value ) ) {
                     $is_duplicate = false;
@@ -245,6 +261,7 @@ class FrmEntry {
 	/**
 	 * After switching to the wp_loaded hook for processing entries,
 	 * we can no longer use 'name', but check it as a fallback
+	 *
 	 * @since 2.0.11
 	 */
 	public static function get_new_entry_name( $values, $default = '' ) {
@@ -257,6 +274,7 @@ class FrmEntry {
 
 	/**
 	 * If $entry is numeric, get the entry object
+	 *
 	 * @param int|object $entry by reference
 	 * @since 2.0.9
 	 */
@@ -881,12 +899,12 @@ class FrmEntry {
 		return $updated;
 	}
 
-    /**
-     * @param string $key
-     * @return int entry_id
-     */
+	/**
+	 * @param string $key
+	 * @return int entry_id
+	 */
 	public static function get_id_by_key( $key ) {
-        $entry_id = FrmDb::get_var( 'frm_items', array( 'item_key' => sanitize_title( $key ) ) );
-        return $entry_id;
-    }
+		$entry_id = FrmDb::get_var( 'frm_items', array( 'item_key' => sanitize_title( $key ) ) );
+		return (int) $entry_id;
+	}
 }

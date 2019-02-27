@@ -33,12 +33,24 @@ class FrmSettingsController {
 	private static function get_settings_tabs() {
 		$sections = array();
 		if ( apply_filters( 'frm_include_addon_page', false ) ) {
-			$sections['licenses'] = array(
-				'class'    => 'FrmAddonsController',
-				'function' => 'license_settings',
-				'name'     => __( 'Plugin Licenses', 'formidable' ),
-				'ajax'     => true,
-			);
+			// if no addons need a license, skip this page
+			$show_licenses = false;
+			$installed_addons = apply_filters( 'frm_installed_addons', array() );
+			foreach ( $installed_addons as $installed_addon ) {
+				if ( ! $installed_addon->is_parent_licence && $installed_addon->plugin_name != 'Formidable Pro' ) {
+					$show_licenses = true;
+					break;
+				}
+			}
+
+			if ( $show_licenses ) {
+				$sections['licenses'] = array(
+					'class'    => 'FrmAddonsController',
+					'function' => 'license_settings',
+					'name'     => __( 'Plugin Licenses', 'formidable' ),
+					'ajax'     => true,
+				);
+			}
 		}
 		$sections = apply_filters( 'frm_add_settings_section', $sections );
 
@@ -108,4 +120,50 @@ class FrmSettingsController {
 			self::display_form();
         }
     }
+
+	/**
+	 * Add CTA to the bottom on the plugin settings pages.
+	 *
+	 * @since 3.04.02
+	 */
+	public static function settings_cta( $view ) {
+
+		if ( get_option( 'frm_lite_settings_upgrade', false ) ) {
+			return;
+		}
+
+		$features = array(
+			__( 'Extra form features like file uploads, pagination, etc', 'formidable' ),
+			__( 'Repeaters & cascading fields for advanced forms', 'formidable' ),
+			__( 'Flexibly view, search, edit, and delete entries anywhere', 'formidable' ),
+			__( 'Display entries with virtually limitless Formidable views', 'formidable' ),
+			__( 'Create surveys & polls', 'formidable' ),
+			__( 'WordPress user registration and login forms', 'formidable' ),
+			__( 'Create Stripe, PayPal or Authorize.net payment forms', 'formidable' ),
+			__( 'Powerful conditional logic for smart forms', 'formidable' ),
+			__( 'Integrations with 1000+ marketing & payment services', 'formidable' ),
+			__( 'Collect digital signatures', 'formidable' ),
+			__( 'Accept user-submitted content with Post submissions', 'formidable' ),
+			__( 'Email routing', 'formidable' ),
+			__( 'Create calculator forms', 'formidable' ),
+			__( 'Save draft entries and return later', 'formidable' ),
+			__( 'Analyze form data with graphs & stats', 'formidable' ),
+		);
+
+		include( FrmAppHelper::plugin_path() . '/classes/views/frm-settings/settings_cta.php' );
+	}
+
+	/**
+	 * Dismiss upgrade notice at the bottom on the plugin settings pages.
+	 *
+	 * @since 3.04.02
+	 */
+	public static function settings_cta_dismiss() {
+		FrmAppHelper::permission_check( 'frm_change_settings' );
+
+		update_option( 'frm_lite_settings_upgrade', time(), 'no' );
+
+		wp_send_json_success();
+	}
+
 }

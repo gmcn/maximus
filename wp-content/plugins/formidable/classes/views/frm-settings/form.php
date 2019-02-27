@@ -3,6 +3,18 @@
 
 	<?php require( FrmAppHelper::plugin_path() . '/classes/views/shared/errors.php' ); ?>
 
+	<div class="metabox-holder">
+		<div class="postbox">
+			<div class="inside frm_license_box">
+				<h2><?php esc_html_e( 'License', 'formidable' ); ?></h2>
+				<hr/>
+				<p class="howto"><?php esc_html_e( 'Your license key provides access to automatic updates.', 'formidable' ); ?></p>
+
+				<?php do_action( 'frm_before_settings' ); ?>
+			</div>
+		</div>
+	</div>
+
     <div id="poststuff" class="metabox-holder">
     <div id="post-body">
         <div class="meta-box-sortables">
@@ -26,8 +38,6 @@
         </ul>
         </div>
 
-	<?php do_action( 'frm_before_settings' ); ?>
-
 	<form name="frm_settings_form" method="post" class="frm_settings_form" action="?page=formidable-settings<?php echo esc_html( $a ? '&amp;t=' . $a : '' ); ?>">
         <input type="hidden" name="frm_action" value="process-form" />
         <input type="hidden" name="action" value="process-form" />
@@ -35,7 +45,7 @@
 
         <div class="general_settings tabs-panel <?php echo esc_attr( $a === 'general_settings' ? 'frm_block' : 'frm_hidden' ); ?>">
             <p class="submit">
-				<input class="button-primary" type="submit" value="<?php esc_attr_e( 'Update Options', 'formidable' ) ?>" />
+				<input class="button-primary frm-button-primary" type="submit" value="<?php esc_attr_e( 'Update Options', 'formidable' ) ?>" />
             </p>
 
 			<h3><?php esc_html_e( 'Styling & Scripts', 'formidable' ); ?></h3>
@@ -222,7 +232,7 @@
             <span class="spinner frm_spinner"></span>
         </p>
         <p class="submit">
-			<input class="button-primary" type="submit" value="<?php esc_attr_e( 'Update Options', 'formidable' ) ?>" />
+			<input class="button-primary frm-button-primary" type="submit" value="<?php esc_attr_e( 'Update Options', 'formidable' ) ?>" />
         </p>
 
     </form>
@@ -233,4 +243,6 @@
 </div>
 
 </div>
+
+<?php do_action( 'frm_after_settings' ); ?>
 </div>

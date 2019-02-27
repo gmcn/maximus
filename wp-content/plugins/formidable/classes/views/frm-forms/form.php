@@ -6,7 +6,7 @@
 
 <div class="postbox">
 	<div id="titlediv" class="inside">
-	    <input type="text" name="name" value="<?php echo esc_attr( $form->name ); ?>" id="title" placeholder="<?php esc_attr_e( 'Enter title here' ) ?>" />
+		<input type="text" name="name" value="<?php echo esc_attr( $form->name ); ?>" id="title" placeholder="<?php esc_attr_e( 'Enter title here', 'formidable' ); ?>" />
 	</div>
 
 	<div class="frm_no_fields <?php echo ( isset( $values['fields'] ) && ! empty( $values['fields'] ) ) ? 'frm_hidden' : ''; ?>">
@@ -25,17 +25,6 @@
 	    <div class="clear"></div>
 
 		<div class="frm_drag_inst"><?php esc_html_e( 'Add Fields Here', 'formidable' ) ?></div>
-		<p id="frm_create_template_form">
-			<?php if ( ! empty( $all_templates ) ) { ?>
-			<?php esc_html_e( 'Or load fields from a template', 'formidable' ); ?>
-			<select id="frm_create_template_dropdown">
-				<?php foreach ( $all_templates as $temp ) { ?>
-				<option value="<?php echo esc_attr( $temp->id ) ?>"><?php echo FrmAppHelper::truncate( $temp->name, 40 ); // WPCS: XSS ok. ?></option>
-				<?php } ?>
-			</select>
-			<input type="button" id="frm_create_template_button" class="button-secondary" value="<?php esc_attr_e( 'Load Template', 'formidable' ) ?>" />
-			<?php } ?>
-		</p>
 
     	<div class="alignleft sketch3">
 			<div class="alignright"><?php esc_html_e( '3. Save your form', 'formidable' ) ?></div>
@@ -55,12 +44,7 @@ if ( isset( $values['fields'] ) && ! empty( $values['fields'] ) ) {
 }
 ?>
 </ul>
-
-<p>
-	<?php $page_action = FrmAppHelper::get_param( 'frm_action' ); ?>
-	<button class="frm_submit_<?php echo ( isset( $values['ajax_load'] ) && $values['ajax_load'] ) ? '' : 'no_'; ?>ajax button-primary frm_button_submit" type="button"><?php echo esc_html( ( $page_action == 'edit' || $page_action == 'update' ) ? __( 'Update', 'formidable' ) : __( 'Create', 'formidable' ) ); ?></button>
-</p>
-
+<input type="hidden" name="frm_end" value="1" />
 </div>
 
 </div>

@@ -1,14 +1,15 @@
-<div class="wrap">
-	<h1><?php esc_html_e( 'Import/Export', 'formidable' ); ?></h1>
+<div class="frm_wrap">
+	<?php
+	FrmAppHelper::get_admin_header(
+		array(
+			'label' => __( 'Import/Export', 'formidable' ),
+		)
+	);
+	?>
+	<div class="wrap">
+		<?php include( FrmAppHelper::plugin_path() . '/classes/views/shared/errors.php' ); ?>
 
-	<?php include( FrmAppHelper::plugin_path() . '/classes/views/shared/errors.php' ); ?>
-	<div id="poststuff" class="metabox-holder">
-	<div id="post-body">
-	<div id="post-body-content">
-
-	<div class="postbox ">
-	<h3 class="hndle"><span><?php esc_html_e( 'Import', 'formidable' ) ?></span></h3>
-	<div class="inside">
+		<h2 class="frm-h2"><?php esc_html_e( 'Import', 'formidable' ); ?></h2>
 		<p class="howto"><?php echo esc_html( apply_filters( 'frm_upload_instructions1', __( 'Upload your Formidable XML file to import forms into this site. If your imported form key and creation date match a form on your site, that form will be updated.', 'formidable' ) ) ) ?></p>
 		<br/>
 		<form enctype="multipart/form-data" method="post">
@@ -29,12 +30,12 @@
 			</p>
 		</form>
 		<?php FrmTipsHelper::pro_tip( 'get_import_tip' ); ?>
-	</div>
-	</div>
 
-	<div class="postbox">
-	<h3 class="hndle"><span><?php esc_html_e( 'Export', 'formidable' ) ?></span></h3>
-	<div class="inside with_frm_style">
+		<br/><br/>
+		<h2 class="frm-h2"><?php esc_html_e( 'Export', 'formidable' ); ?></h2>
+		<p class="howto">
+			<?php echo esc_html( __( 'Export your forms, entries, views, and styles so you can easily import them on another site.', 'formidable' ) ); ?>
+		</p>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" id="frm_export_xml">
 			<input type="hidden" name="action" value="frm_export_xml" />
 			<?php wp_nonce_field( 'export-xml-nonce', 'export-xml' ); ?>
@@ -92,11 +93,9 @@
 						<?php foreach ( $forms as $form ) { ?>
 							<option value="<?php echo esc_attr( $form->id ) ?>">
 								<?php
-								echo esc_html( '' === $form->name ? __( '(no title)' ) : $form->name );
+								echo esc_html( '' === $form->name ? __( '(no title)', 'formidable' ) : $form->name );
 								echo ' &mdash; ' . esc_html( $form->form_key );
-								if ( $form->is_template && $form->default_template ) {
-									echo ' ' . esc_html__( '(default template)', 'formidable' );
-								} elseif ( $form->is_template ) {
+								if ( $form->is_template ) {
 									echo ' ' . esc_html__( '(template)', 'formidable' );
 								} elseif ( $form->parent_form_id ) {
 									echo ' ' . esc_html__( '(child)', 'formidable' );
@@ -114,10 +113,5 @@
 			</p>
 		</form>
 
-	</div>
-	</div>
-
-	</div>
-	</div>
 	</div>
 </div>

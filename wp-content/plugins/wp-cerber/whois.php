@@ -1,6 +1,7 @@
 <?php
 /*
-	Copyright (C) 2015-18 CERBER TECH INC., Gregory Markov, https://wpcerber.com
+	Copyright (C) 2015-19 CERBER TECH INC., http://cerber.tech
+	Copyright (C) 2015-19 CERBER TECH INC., https://wpcerber.com
 
     Licenced under the GNU GPL.
 
@@ -191,22 +192,20 @@ function make_whois_request($server, $ip) {
 }
 
 /**
- * HTML for displaying tiny national flag in the admin
+ * HTML for displaying a national flag
  *
  * @param $code string Country code
  *
  * @return string   HTML code
+ *
  */
-function cerber_get_flag_html( $code ) {
-	static $assets_url;
+function cerber_get_flag_html( $code, $txt = '' ) {
+	global $crb_assets_url;
 	if ( ! $code ) {
 		return '';
 	}
-	if ( ! isset( $assets_url ) ) {
-		$assets_url = cerber_plugin_dir_url() . 'assets/';
-	}
 
-	return '<span style="padding-left: 24px; background: url(\'' . $assets_url . 'flags/' . strtolower( $code ) . '.gif\') no-repeat left;"></span>';
+	return '<span class="crb-country" style="background: url(\'' . $crb_assets_url . 'flags/' . strtolower( $code ) . '.gif\') no-repeat left;">' . $txt . '</span>';
 }
 /*
  *
@@ -231,7 +230,7 @@ function cerber_country_name( $code ) {
 	$ret = '';
 
 	if (!isset($locale)) {
-		$locale = get_bloginfo( 'language' );
+		$locale = crb_get_bloginfo( 'language' );
 		if ( $locale != 'pt-BR' && $locale != 'zh-CN' ) {
 			$locale = substr( $locale, 0, 2 );
 			if ( ! in_array( $locale, array( 'de', 'en', 'es', 'fr', 'ja', 'ru' ) ) ) {

@@ -9,19 +9,25 @@ class FrmAppController {
         }
 
 		$menu_name = FrmAppHelper::get_menu_name();
-		add_menu_page( 'Formidable', $menu_name, 'frm_view_forms', 'formidable', 'FrmFormsController::route', '', self::get_menu_position() );
+		add_menu_page( 'Formidable', $menu_name, 'frm_view_forms', 'formidable', 'FrmFormsController::route', self::menu_icon(), self::get_menu_position() );
     }
 
 	private static function get_menu_position() {
-		$query = array(
-			'show_ui'      => true,
-			'_builtin'     => false,
-			'show_in_menu' => true,
+		return apply_filters( 'frm_menu_position', '29.3' );
+	}
+
+	/**
+	 * @since 3.05
+	 */
+	private static function menu_icon() {
+		$icon = FrmAppHelper::svg_logo(
+			array(
+				'fill'   => '#a0a5aa',
+				'orange' => '#a0a5aa',
+			)
 		);
-		$count = count( get_post_types( $query ) );
-		$pos = $count ? '22.7' : '29.3';
-		$pos = apply_filters( 'frm_menu_position', $pos );
-		return $pos;
+		$icon = 'data:image/svg+xml;base64,' . base64_encode( $icon );
+		return apply_filters( 'frm_icon', $icon );
 	}
 
 	/**
@@ -38,7 +44,7 @@ class FrmAppController {
 	 * @since 3.0
 	 */
 	private static function is_white_page() {
-		$is_white_page = ( FrmAppHelper::is_admin_page( 'formidable' ) || FrmAppHelper::is_admin_page( 'formidable-entries' ) || FrmAppHelper::is_admin_page( 'formidable-pro-upgrade' ) );
+		$is_white_page = ( FrmAppHelper::is_admin_page( 'formidable' ) || FrmAppHelper::is_admin_page( 'formidable-entries' ) || FrmAppHelper::is_admin_page( 'formidable-pro-upgrade' ) || FrmAppHelper::is_admin_page( 'formidable-addons' ) || FrmAppHelper::is_admin_page( 'formidable-import' ) );
 		if ( ! $is_white_page ) {
 			$screen = get_current_screen();
 			$is_white_page = ( $screen && $screen->id === 'edit-frm_display' );
@@ -126,6 +132,7 @@ class FrmAppController {
 
     public static function pro_get_started_headline() {
 		self::maybe_show_upgrade_bar();
+		self::review_request();
 
         // Don't display this error as we're upgrading the thing, or if the user shouldn't see the message
         if ( 'upgrade-plugin' == FrmAppHelper::simple_get( 'action', 'sanitize_title' ) || ! current_user_can( 'update_plugins' ) ) {
@@ -133,26 +140,34 @@ class FrmAppController {
         }
 
 		$pro_installed = is_dir( WP_PLUGIN_DIR . '/formidable-pro' );
+		$authorized    = get_site_option( 'frmpro-authorized' ) && ! is_callable( 'load_formidable_pro' );
+		if ( ! $authorized ) {
+			return;
+		}
 
-		if ( get_site_option( 'frmpro-authorized' ) && ! is_callable( 'load_formidable_pro' ) ) {
-			FrmAppHelper::load_admin_wide_js();
+		FrmAppHelper::load_admin_wide_js();
 
-			// user is authorized, but running free version
+		// user is authorized, but running free version
+		$download_url = '';
+		if ( $pro_installed ) {
+			// if pro version is installed, include link to activate it
+			$inst_install_url = wp_nonce_url( self_admin_url( 'plugins.php?action=activate&plugin=formidable-pro/formidable-pro.php' ), 'activate-plugin_formidable-pro/formidable-pro.php' );
+		} else {
+			$inst_install_url = '#';
+			$download_url = FrmAddonsController::get_pro_download_url();
 
-			if ( $pro_installed ) {
-				// if pro version is installed, include link to activate it
-				$inst_install_url = wp_nonce_url( self_admin_url( 'plugins.php?action=activate&plugin=formidable-pro/formidable-pro.php' ), 'activate-plugin_formidable-pro/formidable-pro.php' );
-			} else {
-				$inst_install_url = 'https://formidableforms.com/knowledgebase/install-formidable-forms/';
+			if ( empty( $download_url ) ) {
+				$inst_install_url = 'https://formidableforms.com/knowledgebase/install-formidable-forms/?utm_source=WordPress&utm_medium=get-started&utm_campaign=liteplugin';
 			}
+		}
         ?>
-<div class="error" class="frm_previous_install">
+<div class="error frm_previous_install">
 		<?php
 		echo apply_filters( // WPCS: XSS ok.
 			'frm_pro_update_msg',
 			sprintf(
 				esc_html__( 'This site has been previously authorized to run Formidable Forms. %1$sInstall Formidable Pro%2$s or %3$sdeauthorize%4$s this site to continue running the free version and remove this message.', 'formidable' ),
-				'<br/><a href="' . esc_url( $inst_install_url ) . '" target="_blank">',
+				'<br/><a href="' . esc_url( $inst_install_url ) . '" id="frm_install_link" target="_blank" data-prourl="' . esc_url( $download_url ) . '">',
 				'</a>',
 				'<a href="#" class="frm_deauthorize_link">',
 				'</a>'
@@ -160,32 +175,90 @@ class FrmAppController {
 			esc_url( $inst_install_url )
 		);
 		?>
+	<div id="frm_install_message" class="hidden frm_hidden"></div>
 </div>
 <?php
-        }
     }
 
 	private static function maybe_show_upgrade_bar() {
-		$page = FrmAppHelper::simple_get( 'page', 'sanitize_title' );
-		if ( strpos( $page, 'formidable' ) !== 0 ) {
-			return;
-		}
-
-		if ( FrmAppHelper::pro_is_installed() ) {
+		if ( ! FrmAppHelper::is_formidable_admin() || FrmAppHelper::pro_is_installed() ) {
 			return;
 		}
 
 		$affiliate = FrmAppHelper::get_affiliate();
 		if ( ! empty( $affiliate ) ) {
 			$tip = FrmTipsHelper::get_banner_tip();
+			$link = FrmAppHelper::admin_upgrade_link( 'banner' );
 ?>
 <div class="update-nag frm-update-to-pro">
 	<?php echo FrmAppHelper::kses( $tip['tip'] ); // WPCS: XSS ok. ?>
 	<span><?php echo FrmAppHelper::kses( $tip['call'] ); // WPCS: XSS ok. ?></span>
-	<a href="<?php echo esc_url( FrmAppHelper::make_affiliate_url( 'https://formidableforms.com?banner=1&tip=' . absint( $tip['num'] ) ) ); ?>" class="button">Upgrade to Pro</a>
+	<a href="<?php echo esc_url( FrmAppHelper::make_affiliate_url( $link ) ); ?>" class="button">Upgrade to Pro</a>
 </div>
 <?php
 		}
+	}
+
+	/**
+	 * Add admin notices as needed for reviews
+	 *
+	 * @since 3.04.03
+	 */
+	private static function review_request() {
+		$reviews = new FrmReviews();
+		$reviews->review_request();
+	}
+
+	/**
+	 * Save the request to hide the review
+	 *
+	 * @since 3.04.03
+	 */
+	public static function dismiss_review() {
+		FrmAppHelper::permission_check( 'frm_change_settings' );
+		check_ajax_referer( 'frm_ajax', 'nonce' );
+
+		$reviews = new FrmReviews();
+		$reviews->dismiss_review();
+	}
+
+	/**
+	 * @since 3.04.02
+	 */
+	public static function include_upgrade_overlay() {
+		$is_pro = FrmAppHelper::pro_is_installed();
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_style( 'jquery-ui-dialog' );
+		$upgrade_link = array(
+			'medium'  => 'builder',
+			'content' => 'upgrade',
+		);
+
+		include( FrmAppHelper::plugin_path() . '/classes/views/shared/upgrade_overlay.php' );
+	}
+
+	/**
+	 * @since 3.04.02
+	 */
+	public static function remove_upsells() {
+		remove_action( 'frm_before_settings', 'FrmSettingsController::license_box' );
+		remove_action( 'frm_after_settings', 'FrmSettingsController::settings_cta' );
+	}
+
+	/**
+	 * Don't nag people to install WPForms
+	 *
+	 * @since 3.05
+	 */
+	public static function remove_wpforms_nag( $upsell ) {
+		if ( is_array( $upsell ) ) {
+			foreach ( $upsell as $k => $plugin ) {
+				if ( strpos( $plugin['slug'], 'wpforms' ) !== false ) {
+					unset( $upsell[ $k ] );
+				}
+			}
+		}
+		return $upsell;
 	}
 
 	/**
@@ -342,31 +415,6 @@ class FrmAppController {
     }
 
 	/**
-	 * Filter shortcodes in text widgets
-	 *
-	 * @deprecated 2.5.4
-	 * @codeCoverageIgnore
-	 */
-	public static function widget_text_filter( $content ) {
-		_deprecated_function( __METHOD__, '2.5.4' );
-		$regex = '/\[\s*(formidable|display-frm-data|frm-stats|frm-graph|frm-entry-links|formresults|frm-search)\s+.*\]/';
-		return preg_replace_callback( $regex, 'FrmAppHelper::widget_text_filter_callback', $content );
-	}
-
-	/**
-	 * Deprecated in favor of wpmu_upgrade_site
-	 *
-	 * @deprecated 2.3
-	 * @codeCoverageIgnore
-	 */
-	public static function front_head() {
-		_deprecated_function( __FUNCTION__, '2.3' );
-		if ( is_multisite() && self::needs_update() ) {
-			self::install();
-		}
-	}
-
-	/**
 	 * Check if the styles are updated when a form is loaded on the front-end
 	 *
 	 * @since 3.0.1
@@ -440,17 +488,6 @@ class FrmAppController {
 		wp_die();
 	}
 
-	/**
-	 * @deprecated 3.0.04
-	 * @codeCoverageIgnore
-	 */
-    public static function activation_install() {
-		_deprecated_function( __METHOD__, '3.0.04', 'FrmAppController::install' );
-        FrmDb::delete_cache_and_transient( 'frm_plugin_version' );
-        FrmFormActionsController::actions_init();
-        self::install();
-    }
-
     public static function install() {
         $frmdb = new FrmMigrate();
         $frmdb->upgrade();
@@ -479,23 +516,6 @@ class FrmAppController {
         return $tables;
     }
 
-	/**
-	 * Routes for wordpress pages -- we're just replacing content
-	 *
-	 * @deprecated 3.0
-	 * @codeCoverageIgnore
-	 */
-	public static function page_route( $content ) {
-		_deprecated_function( __METHOD__, '3.0' );
-		global $post;
-
-		if ( $post && isset( $_GET['form'] ) ) {
-			$content = FrmFormsController::page_preview();
-		}
-
-		return $content;
-	}
-
     public static function deauthorize() {
 		FrmAppHelper::permission_check( 'frm_change_settings' );
         check_ajax_referer( 'frm_ajax', 'nonce' );
@@ -509,9 +529,10 @@ class FrmAppController {
 
 	public static function set_footer_text( $text ) {
 		if ( FrmAppHelper::is_formidable_admin() ) {
+			$link = FrmAppHelper::admin_upgrade_link( 'footer' );
 			$text = sprintf(
 				__( 'Help us spread the %1$sFormidable Forms%2$s love with %3$s %5$s on WordPress.org%4$s. Thank you heaps!', 'formidable' ),
-				'<a href="' . esc_url( FrmAppHelper::make_affiliate_url( 'https://formidableforms.com' ) ) . '" target="_blank">',
+				'<a href="' . esc_url( FrmAppHelper::make_affiliate_url( $link ) ) . '" target="_blank">',
 				'</a>',
 				'<a href="https://wordpress.org/support/plugin/formidable/reviews/?filter=5#new-post" target="_blank">',
 				'</a>',
@@ -527,7 +548,41 @@ class FrmAppController {
 	 * @codeCoverageIgnore
 	 */
     public static function get_form_shortcode( $atts ) {
-        _deprecated_function( __FUNCTION__, '1.07.05', 'FrmFormsController::get_form_shortcode()' );
-        return FrmFormsController::get_form_shortcode( $atts );
+        return FrmDeprecated::get_form_shortcode( $atts );
     }
+
+	/**
+	 * @deprecated 2.5.4
+	 * @codeCoverageIgnore
+	 */
+	public static function widget_text_filter( $content ) {
+		return FrmDeprecated::widget_text_filter( $content );
+	}
+
+	/**
+	 * Deprecated in favor of wpmu_upgrade_site
+	 *
+	 * @deprecated 2.3
+	 * @codeCoverageIgnore
+	 */
+	public static function front_head() {
+		FrmDeprecated::front_head();
+	}
+
+
+	/**
+	 * @deprecated 3.0.04
+	 * @codeCoverageIgnore
+	 */
+	public static function activation_install() {
+		FrmDeprecated::activation_install();
+	}
+
+	/**
+	 * @deprecated 3.0
+	 * @codeCoverageIgnore
+	 */
+	public static function page_route( $content ) {
+		return FrmDeprecated::page_route( $content );
+	}
 }

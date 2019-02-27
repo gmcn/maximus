@@ -5,13 +5,13 @@
 	Description: Defends WordPress against hacker attacks, spam, trojans, and viruses. Malware scanner and integrity checker. Hardening WordPress with a set of comprehensive security algorithms. Spam protection with a sophisticated bot detection engine and reCAPTCHA. Tracks user and intruder activity with powerful email, mobile and desktop notifications.
 	Author: Gregory
 	Author URI: https://wpcerber.com
-	Version: 7.6
+	Version: 8.0
 	Text Domain: wp-cerber
 	Domain Path: /languages
 	Network: true
 
- 	Copyright (C) 2015-18 CERBER TECH INC., http://cerber.tech
-    Copyright (C) 2015-18 Gregory Markov, https://wpcerber.com
+	Copyright (C) 2015-19 CERBER TECH INC., http://cerber.tech
+	Copyright (C) 2015-19 CERBER TECH INC., https://wpcerber.com
 
     Licenced under the GNU GPL.
 
@@ -31,7 +31,7 @@
 
 */
 
-define( 'CERBER_VER', '7.6' );
+define( 'CERBER_VER', '8.0' );
 
 function cerber_plugin_file() {
 	return __FILE__;
@@ -166,6 +166,26 @@ function cerber_get_abspath() {
 	return $abspath;
 }
 
+function cerber_request_time() {
+	static $stamp = null;
+
+	if ( ! isset( $stamp ) ) {
+
+		if ( ! empty( $_SERVER['REQUEST_TIME_FLOAT'] ) ) { // PHP >= 5.4
+			$stamp = filter_var( $_SERVER['REQUEST_TIME_FLOAT'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION );
+		}
+		$mt = microtime( true );
+		if ( ! $stamp || $stamp > ( $mt + 300 ) ) { // Some platforms may have wrong value in 'REQUEST_TIME_FLOAT'
+			$stamp = $mt;
+		}
+	}
+
+	return $stamp;
+}
+
+cerber_request_time();
+
 require_once( dirname( __FILE__ ) . '/cerber-load.php' );
+
 cerber_init();
 

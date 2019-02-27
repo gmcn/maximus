@@ -75,8 +75,8 @@ class FrmEntriesController {
 
         $screen->set_help_sidebar(
 			'<p><strong>' . esc_html__( 'For more information:', 'formidable' ) . '</strong></p>' .
-			'<p><a href="' . esc_url( FrmAppHelper::make_affiliate_url( 'https://formidableforms.com/knowledgebase/manage-entries-from-the-back-end/' ) ) . '" target="_blank">' . esc_html__( 'Documentation on Entries', 'formidable' ) . '</a></p>' .
-			'<p><a href="' . esc_url( FrmAppHelper::make_affiliate_url( 'https://formidableforms.com/help-desk/' ) ) . '" target="_blank">' . esc_html__( 'Support', 'formidable' ) . '</a></p>'
+			'<p><a href="' . esc_url( FrmAppHelper::make_affiliate_url( 'https://formidableforms.com/knowledgebase/manage-entries-from-the-back-end/?utm_source=WordPress&utm_medium=entries&utm_campaign=liteplugin' ) ) . '" target="_blank">' . esc_html__( 'Documentation on Entries', 'formidable' ) . '</a></p>' .
+			'<p><a href="' . esc_url( FrmAppHelper::make_affiliate_url( 'https://formidableforms.com/support/?utm_source=WordPress&utm_medium=entries&utm_campaign=liteplugin' ) ) . '" target="_blank">' . esc_html__( 'Support', 'formidable' ) . '</a></p>'
     	);
 
         return $help;
@@ -551,24 +551,6 @@ class FrmEntriesController {
 		return $form_ids;
 	}
 
-	/**
-	 * @deprecated 1.07.05
-	 * @codeCoverageIgnore
-	 */
-    public static function show_form( $id = '', $key = '', $title = false, $description = false ) {
-        _deprecated_function( __FUNCTION__, '1.07.05', 'FrmFormsController::show_form()' );
-        return FrmFormsController::show_form( $id, $key, $title, $description );
-    }
-
-	/**
-	 * @deprecated 1.07.05
-	 * @codeCoverageIgnore
-	 */
-    public static function get_form( $filename, $form, $title, $description ) {
-        _deprecated_function( __FUNCTION__, '1.07.05', 'FrmFormsController::get_form()' );
-        return FrmFormsController::get_form( $form, $title, $description );
-    }
-
     public static function process_entry( $errors = '', $ajax = false ) {
 		$form_id = FrmAppHelper::get_post_param( 'form_id', '', 'absint' );
 		if ( FrmAppHelper::is_admin() || empty( $_POST ) || empty( $form_id ) || ! isset( $_POST['item_key'] ) ) {
@@ -600,6 +582,7 @@ class FrmEntriesController {
 		/**
 		 * Use this filter to add trigger actions and add errors after
 		 * all other errors have been processed
+		 *
 		 * @since 2.0.6
 		 */
 		$errors = apply_filters( 'frm_entries_before_create', $errors, $form );
@@ -660,7 +643,7 @@ class FrmEntriesController {
     }
 
 	/**
-	 * unlink entry from post
+	 * Unlink entry from post
 	 */
 	private static function unlink_post( $entry_id ) {
 		global $wpdb;
@@ -731,4 +714,20 @@ class FrmEntriesController {
 
 		include( FrmAppHelper::plugin_path() . '/classes/views/frm-entries/sidebar-shared.php' );
     }
+
+	/**
+	 * @deprecated 1.07.05
+	 * @codeCoverageIgnore
+	 */
+	public static function show_form( $id = '', $key = '', $title = false, $description = false ) {
+		return FrmDeprecated::show_form( $id, $key, $title, $description );
+	}
+
+	/**
+	 * @deprecated 1.07.05
+	 * @codeCoverageIgnore
+	 */
+	public static function get_form( $filename, $form, $title, $description ) {
+		return FrmDeprecated::get_form( $filename, $form, $title, $description );
+	}
 }

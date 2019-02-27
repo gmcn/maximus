@@ -98,40 +98,6 @@ class FrmFieldsController {
         return $field;
     }
 
-	/**
-	 * @deprecated 3.0
-	 * @codeCoverageIgnore
-	 */
-	public static function edit_name( $field = 'name', $id = '' ) {
-		_deprecated_function( __FUNCTION__, '3.0' );
-
-		FrmAppHelper::permission_check( 'frm_edit_forms' );
-		check_ajax_referer( 'frm_ajax', 'nonce' );
-
-		if ( empty( $field ) ) {
-			$field = 'name';
-		}
-
-        if ( empty( $id ) ) {
-			$id = FrmAppHelper::get_post_param( 'element_id', '', 'sanitize_title' );
-			$id = str_replace( 'field_label_', '', $id );
-        }
-
-		$value = FrmAppHelper::get_post_param( 'update_value', '', 'wp_kses_post' );
-		$value = trim( $value );
-        if ( trim( strip_tags( $value ) ) === '' ) {
-            // set blank value if there is no content
-            $value = '';
-        }
-
-		FrmField::update( $id, array( $field => $value ) );
-
-		do_action( 'frm_after_update_field_' . $field, compact( 'id', 'value' ) );
-
-		echo stripslashes( wp_kses_post( $value ) ); // WPCS: XSS ok.
-        wp_die();
-    }
-
     public static function update_ajax_option() {
 		FrmAppHelper::permission_check( 'frm_edit_forms' );
         check_ajax_referer( 'frm_ajax', 'nonce' );
@@ -168,13 +134,15 @@ class FrmFieldsController {
 
 		$copy_field = FrmField::getOne( $field_id );
         if ( ! $copy_field ) {
-            wp_die();
+			wp_die();
         }
 
 		do_action( 'frm_duplicate_field', $copy_field, $form_id );
 		do_action( 'frm_duplicate_field_' . $copy_field->type, $copy_field, $form_id );
 
-		$values = array();
+		$values = array(
+			'id' => $copy_field->id,
+		);
 		FrmFieldsHelper::fill_field( $values, $copy_field, $copy_field->form_id );
 		$values = apply_filters( 'frm_prepare_single_field_for_duplication', $values );
 
@@ -185,27 +153,6 @@ class FrmFieldsController {
 
         wp_die();
     }
-
-	/**
-	 * Load a single field in the form builder along with all needed variables
-	 *
-	 * @deprecated 3.0
-	 * @codeCoverageIgnore
-	 *
-	 * @param int $field_id
-	 * @param array $values
-	 * @param int $form_id
-	 *
-	 * @return array
-	 */
-	public static function include_single_field( $field_id, $values, $form_id = 0 ) {
-		_deprecated_function( __FUNCTION__, '3.0', 'FrmFieldsController::load_single_field' );
-
-		$field = FrmFieldsHelper::setup_edit_vars( FrmField::getOne( $field_id ) );
-		self::load_single_field( $field, $values, $form_id );
-
-		return $field;
-	}
 
 	/**
 	 * @since 3.0
@@ -317,22 +264,6 @@ class FrmFieldsController {
 		wp_die();
     }
 
-	/**
-	 * @deprecated 2.3
-	 * @codeCoverageIgnore
-	 */
-    public static function edit_option() {
-		_deprecated_function( __FUNCTION__, '2.3' );
-    }
-
-	/**
-	 * @deprecated 2.3
-	 * @codeCoverageIgnore
-	 */
-    public static function delete_option() {
-		_deprecated_function( __FUNCTION__, '2.3' );
-    }
-
     public static function import_choices() {
         FrmAppHelper::permission_check( 'frm_edit_forms', 'hide' );
 
@@ -372,7 +303,7 @@ class FrmFieldsController {
 		$field = FrmField::getOne( $field_id );
 
         wp_enqueue_script( 'utils' );
-		wp_enqueue_style( 'formidable-admin', FrmAppHelper::plugin_url() . '/css/frm_admin.css' );
+		wp_enqueue_style( 'formidable-admin', FrmAppHelper::plugin_url() . '/css/frm_admin.css', array(), FrmAppHelper::plugin_version() );
         FrmAppHelper::load_admin_wide_js();
 
 		include( FrmAppHelper::plugin_path() . '/classes/views/frm-fields/import_choices.php' );
@@ -665,7 +596,7 @@ class FrmFieldsController {
 	}
 
 	/**
-	 * use HMTL5 placeholder with js fallback
+	 * Use HMTL5 placeholder with js fallback
 	 *
 	 * @param array $field
 	 * @param array $add_html
@@ -693,11 +624,32 @@ class FrmFieldsController {
 		if ( FrmField::is_required( $field ) ) {
 			$required_message = FrmFieldsHelper::get_error_msg( $field, 'blank' );
 			$add_html['data-reqmsg'] = 'data-reqmsg="' . esc_attr( $required_message ) . '"';
+			self::maybe_add_html_required( $field, $add_html );
 		}
 
 		if ( ! FrmField::is_option_empty( $field, 'invalid' ) ) {
 			$invalid_message = FrmFieldsHelper::get_error_msg( $field, 'invalid' );
 			$add_html['data-invmsg'] = 'data-invmsg="' . esc_attr( $invalid_message ) . '"';
+		}
+	}
+
+	/**
+	 * If 'required' is added to a conditionall hidden field, the form won't
+	 * submit in many browsers. Check to make sure the javascript to conditionally
+	 * remove it is present if needed.
+	 *
+	 * @since 3.06.01
+	 * @param array $field
+	 * @param array $add_html
+	 */
+	private static function maybe_add_html_required( $field, array &$add_html ) {
+		if ( in_array( $field['type'], array( 'radio', 'checkbox', 'file', 'data', 'lookup' ) ) ) {
+			return;
+		}
+
+		$include_html = ! class_exists( 'FrmProDb' ) || version_compare( FrmProDb::$plug_version, '3.06', '>' );
+		if ( $include_html ) {
+			$add_html['aria-required'] = 'aria-required="true"';
 		}
 	}
 
@@ -762,5 +714,43 @@ class FrmFieldsController {
 		}
 
 		return $opt;
+	}
+
+	/**
+	 * @deprecated 3.0
+	 * @codeCoverageIgnore
+	 */
+	public static function edit_name( $field = 'name', $id = '' ) {
+		FrmDeprecated::edit_name( $field, $id );
+	}
+
+	/**
+	 * @deprecated 3.0
+	 * @codeCoverageIgnore
+	 *
+	 * @param int $field_id
+	 * @param array $values
+	 * @param int $form_id
+	 *
+	 * @return array
+	 */
+	public static function include_single_field( $field_id, $values, $form_id = 0 ) {
+		return FrmDeprecated::include_single_field( $field_id, $values, $form_id );
+	}
+
+	/**
+	 * @deprecated 2.3
+	 * @codeCoverageIgnore
+	 */
+	public static function edit_option() {
+		FrmDeprecated::deprecated( __METHOD__, '2.3' );
+	}
+
+	/**
+	 * @deprecated 2.3
+	 * @codeCoverageIgnore
+	 */
+	public static function delete_option() {
+		FrmDeprecated::deprecated( __METHOD__, '2.3' );
 	}
 }

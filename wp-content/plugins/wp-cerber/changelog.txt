@@ -1,3 +1,71 @@
+= 8.0 =
+* New: [Manage multiple WP Cerber instances from one dashboard](https://wpcerber.com/manage-multiple-websites/).
+* New: A new bulk action to block multiple WordPress users at a time.
+* Improvement: The performance of the export feature has been improved significantly.
+* Improvement: Multiple code optimizations improve overall plugin performance.
+
+= 7.9.7 =
+* New: [Authorized users only mode](https://wpcerber.com/only-logged-in-wordpress-users/).
+* New: [An ability to block a user account](https://wpcerber.com/how-to-block-wordpress-user/).
+* New: [Role-based access to WordPress REST API](https://wpcerber.com/restrict-access-to-wordpress-rest-api/).
+* Update: Added ability to search and filter a user on the Activity page.
+* Update: A new, separate setting for preventing user enumeration and user data leaks via WordPress REST API.
+* Update: A new Changelog section on the Tools page.
+* Update: Improved handling scheduled maintenance tasks on a multi-site WordPress installation.
+* Fixed: Several HTML markup errors on plugin admin pages.
+* [Read more](https://wpcerber.com/wp-cerber-security-7-9-7/)
+
+= 7.9.3 =
+* New: New settings for the Traffic Inspector firewall allow you to fine-tune its behavior. You can enable less or more restrictive firewall rules.
+* Update: Troubleshooting of possible issues with scheduled maintenance tasks has been improved.
+* Update: To make troubleshooting easier the plugin logs not only a lockout event but also logs and displays the reason for the lockout.
+* Update: Compatibility with ManageWP and Gravity Forms has been improved.
+* Update: The layout of the Activity and Live Traffic pages has been improved.
+* Bug fixed: The malware scanner wrongly prevents PHP files with few specific names in one particular location from being deleted after a manual scan or during the automatic malware removal.
+* Bug fixed: The number of email notifications might be incorrectly limited to one email per hour.
+* [Read more](https://wpcerber.com/wp-cerber-security-7-9-3/)
+
+= 7.9 =
+* New: The plugin monitors suspicious requests that cause 4xx and 5xx HTTP errors and blocks IP addresses that aggressively generate such requests.
+* New: A set of WordPress navigation menu links. Login, logout, and register menu items can be automatically generated and shown in any WordPress menu or a widget.
+* New: Software error logging. A handy feature that logs PHP errors and shows them on Live Traffic page.
+* New: A new export feature for Traffic Inspector. It allows exporting all log entries or a filtered set from the log of HTTP requests.
+* Update: Multiple improvements to Traffic Inspector firewall algorithms. In short, the detection of obfuscated malicious SQL queries and injections has been  improved.
+* Update: Improved handling of malformed requests to wp-cron.php.
+* Fix: The number of email notifications per hour can exceed the configured limit.
+* [Read more](https://wpcerber.com/wp-cerber-security-7-9/)
+
+= 7.8.5 =
+* New: A new set of heuristics algorithms for detecting obfuscated malicious JavaScript code.
+* New: A new file filter on the Quarantine page lets to filter out quarantined files by the date of the scan.
+* New: The performance of the malware scanner has been improved. Now the scanner deletes all files in the website session and temporary folders permanently before the scan.
+* Update: If the plugin is unable to detect the remote IP address, it uses 0.0.0.0 as an IP.
+* Update: The antispam engine will never block the localhost IP
+* Update: Performance improvements for database queries related to the process of user authentication.
+* Update: Improved handling the plugin settings in a buggy or misconfigured hosting environment that could cause the plugin to reset settings to their default values.
+* Update: Translations have been updated. Thanks to Francesco, Jos Knippen, Fredrik Näslund, Slobodan Ljubic and MARCELHAP.
+* Fix: Fixed an issue with saving settings on the Hardening tab: "Unable to get access to the file…"
+* [Read more](https://wpcerber.com/wp-cerber-security-7-8-5/)
+
+= 7.8 =
+* New: An ignore list for the malware scanner.
+* New: Disabling execution of PHP scripts in the WordPress media folder helps to prevent offenders from exploiting security flaws.
+* New: Disabling PHP error displaying as a setting is useful for misconfigured servers.
+* New: English for the plugin admin interface. Enable it if you prefer to have untranslated, original admin interface.
+* New: Diagnostic logging for the malware scanner. Specify a particular location of the log file by using the CERBER_DIAG_DIR constant.
+* Update: The performance of malware scanning on a slow web server with thousands of issues and tens of thousands of files has been improved.
+* Update: PHP 5.3 is not supported anymore. The plugin can be activated and run only on PHP 5.4 or higher.
+* Fix: If a malicious file is detected on a slow shared hosting, the file can be shown twice in the results of the scan.
+* Fix: A possible issue with the short PHP syntax on old PHP versions in /wp-content/plugins/wp-cerber/common.php on line 1970
+
+= 7.7 =
+* New: [Automatic cleanup of malware and suspicious files](https://wpcerber.com/automatic-malware-removal-wordpress/). This powerful feature is available in the PRO version and automatically deletes trojans, viruses, backdoors, and other malware. Cerber Security Professional scans the website on an hourly basis and removes malware immediately.
+* Update: Algorithms of the malware scanner have been improved to detect obfuscated malware code more precisely for all types of files.
+* Update: Email reports for [scheduled malware scans](https://wpcerber.com/automated-recurring-malware-scans/) have been extended with useful performance numbers and a list of automatically deleted malicious files if you’ve enabled automatic malware removal and some files have been deleted.
+* Fix: A possible issue with uploading large JSON and CSV files. When Traffic Inspector scans uploaded files for malware payload, some JSON and CSV files might be erroneously identified as containing a malicious payload.
+* Fix: A possible Divi theme forms incompatibility. If you use the Divi theme (by Elegant Themes), you can come across a problem with submitting some forms.
+* [Read more](https://wpcerber.com/wp-cerber-security-7-7/)
+
 = 7.6 =
 * New: The quarantine has got a separate admin page in the WordPress dashboard which allows viewing deleted files, restoring or deleting them.
 * New: Now the malware scanner and integrity checker supports multisite WordPress installations.

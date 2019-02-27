@@ -114,6 +114,12 @@ function bbq_meta_links($links, $file) {
 	
 	if ($file == BBQ_FILE) {
 		
+		$home_href  = 'https://perishablepress.com/block-bad-queries/';
+		$home_title = esc_attr__('Plugin Homepage', 'block-bad-queries');
+		$home_text  = esc_html__('Homepage', 'block-bad-queries');
+		
+		$links[] = '<a target="_blank" rel="noopener noreferrer" href="'. $home_href .'" title="'. $home_title .'">'. $home_text .'</a>';
+		
 		$rate_url   = esc_url('https://wordpress.org/support/plugin/block-bad-queries/reviews/?rate=5#new-post');
 		$rate_title = esc_attr__('Click here to rate and review this plugin at WordPress.org', 'block-bad-queries');
 		$rate_text  = esc_html__('Rate this plugin&nbsp;&raquo;', 'block-bad-queries');

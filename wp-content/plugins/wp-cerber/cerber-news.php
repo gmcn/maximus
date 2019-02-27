@@ -1,6 +1,7 @@
 <?php
 /*
- 	Copyright (C) 2015-18 CERBER TECH INC., Gregory Markov, https://wpcerber.com
+	Copyright (C) 2015-19 CERBER TECH INC., http://cerber.tech
+	Copyright (C) 2015-19 CERBER TECH INC., https://wpcerber.com
 
     Licenced under the GNU GPL.
 
@@ -73,99 +74,60 @@ function cerber_push_the_news( $version ) {
 </ul>
 ';
 
-	$news['4.5'][] = 'Instant mobile and browser notifications with Pushbullet. Get notified instantly via push notifications when an important event happens on your WordPress.';
-	$news['4.5'][] = 'Ability to choose a 404 page template. The plugin will try to use the 404 template from the active theme, and this is a default behavior or a generate simple 404 page like Apache web server does.';
-	$news['4.5'][] = 'Events on the Activity tab are displaying with user roles and avatars.';
-
-	$news['4.7.7'][] = 'Welcome invisible reCAPTCHA. You can choose what type you want to use: classic visible or new invisible reCAPTCHA. <a target="_blank" href="http://wpcerber.com/how-to-setup-recaptcha/">How to setup</a>.';
-	$news['4.7.7'][] = 'reCAPTCHA for comment forms is available now. Stop spam comments – use reCAPTCHA as an anti-spam tool for WordPress comment forms.';
-	$news['4.7.7'][] = 'Dates on the plugin dashboard now are displayed according to the Site Language.';
-	$news['4.7.7'][] = '<a target="_blank" href="https://www.facebook.com/pg/wpcerber/reviews/">You can leave a review on Facebook now.</a>';
-
-	$news['5.0'][] = 'Cerber has got a new antispam and bot detection engine that protects comment and user registration forms from bot attacks. No reCAPTCHA is needed anymore! After several attempts bot IP will be locked out.';
-	$news['5.0'][] = 'Now you can tell Cerber either to mark detected spam comments as spam or deny them completely.';
-	$news['5.0'][] = 'Optionally Cerber can automatically move spam comments older than the specified amount of days to trash.';
-	$news['5.0'][] = 'Added code to avoid possible conflict between Custom login URL and REST API.';
-	$news['5.0'][] = 'Added the <i>cerber_404_template</i> filter for specifying an alternative to the default 404 page not found template.';
-
-	$news['5.1'][] = 'Antispam and anti-bot engine for contact and other forms. Cerber antispam and bot detection engine now protects all forms on a website. It’s compatible with virtually any form. Tested with Caldera Forms, Gravity Forms, Contact Form 7, Ninja Forms, Formidable Forms, Fast Secure Contact Form, Contact Form by WPForms.';
-	$news['5.1'][] = 'Portuguese of Portugal translation has been added, thanks to Helderk.';
-
-	$news['5.5'][] = 'White list for the <a href="http://wpcerber.com/antispam-for-wordpress-contact-forms/">WordPress anti-spam engine</a>. It allows creating a list of exceptions by specifying a string to search it in a request URI.';
-	$news['5.5'][] = 'White list for REST API requests. It allows creating a list of namespace exceptions if REST API is disabled.';
-	$news['5.5'][] = 'Disable access to user data via REST API and stop REST API user enumeration.';
-
-	$news['5.8'][] = 'Weekly reports. Now the plugin will send a brief performance report (activity for past seven days) to specified email addresses. Weekly reports are sent once a week. Set desired reporting time on the Notification admin page.';
-	$news['5.8'][] = 'Plugin admin interface pages: compatibility with screen readers has been improved.';
-	$news['5.8'][] = 'Compatibility with caching plugins is improved: define( ‘DONOTCACHEPAGE’, true ) is added for Custom login page.';
-	$news['5.8.2'][] = 'REST API: the deprecated rest_enabled filter is used for WordPress older than 4.7.';
-
-	$news['5.8.6'][] = 'Regular expressions (REGEX) in the list of prohibited usernames.';
-	$news['5.8.6'][] = 'Ability to enable/disable weekly reports, a new field to specify email addresses for weekly reports.';
-	$news['5.8.6'][] = 'Your last login date, IP address, and country will be shown in a report email.';
-	$news['5.8.6'][] = 'Improved compatibility with non-standard authentication processes, WooCommerce and exotic/outdated hosting environments.';
-	$news['5.8.6'][] = 'Bug fixed: Some interface elements of WordPress Customizer might not work, depending on the theme you use.';
-
-	$news['5.9'][] = 'You can add comments for new entries in the access lists';
-	$news['5.9'][] = 'Improved compatibility with exotic hosting environments: now the plugin handles URLs with the MultiViews server option enabled.';
-	$news['5.9'][] = 'Improved compatibility with caching plugins';
-	$news['5.9'][] = 'The plugin doesn’t send cookies if anti-spam is completely disabled';
-	$news['5.9'][] = 'Bug fixed: The plugin logs a logout event if the actual logout doesn’t happen';
-
-	$news['6.0'][] = 'Traffic Inspector. It’s a specialized request inspection algorithm that acts as additional protection layer. Since v 6.0 WP Cerber Security performs inspection all suspicious requests and block them before they can harm a website. This security algorithm is enabled by default and requires no configuration.';
-	$news['6.0'][] = 'Traffic Inspector optionally logs all or just suspicious and malicious requests so you can inspect them.';
-	$news['6.0'][] = 'Added ability to clean up Cerber’s DB tables. Now you can manually delete all rows in a Cerber’s DB table on the Tools / Diagnostic admin page. Note: this operation cannot be rolled back.';
-	$news['6.0'][] = 'If your hosting environment (web server) has some issues and those issues can affect plugin functionality, they are shown on the Tools / Diagnostic page.';
-	$news['6.0'][] = 'On the Access Lists admin page there are new links for each entry to check HTTP requests from a particular network or an IP address.';
-
-	$news['6.1'][] = 'Traffic Inspector has got a Request White List setting. To exclude a particular request from inspection specify a request string without the website domain and query string (GET parameters).';
-	$news['6.1'][] = 'An Activity filter has been added to the Advanced search form on the Traffic Inspector page.';
-	$news['6.1'][] = 'Bug fixed: Two reCAPTCHA widgets on login/registration forms.';
-	$news['6.1'][] = 'Bug fixed: A legitimate IP address can be locked out by Traffic Inspector on a Windows hosting (server).';
-
-	$news['6.2'][] = 'Protection against (DoS) attacks that exploit recently discovered vulnerability (CVE-2018-6389). The protection mechanism is disabled by default. To enable it navigate to the Hardening tab and enable Block unauthorized access to load-scripts.php and load-styles.php. After enabling this setting a set of security rules will be added to the .htaccess file.';
-	$news['6.2'][] = 'The Traffic Inspector algorithm detects malformed and double extensions like .php.jpg more precisely';
-	$news['6.2'][] = 'The access Lists now accept IPv6 addresses in any form. You can enter a shortened IPv6 (short form) or a full IPv6. A full IPv6 will be shortened to the short IPv6 address representation. All existing in access lists IP addresses are converted to the short form.';
-	$news['6.2'][] = 'Bug fixed: If the WP REST API is blocked, a request with specially malformed URL can bypass protection. Thanks to Tomasz Wasiak.';
-	$news['6.2'][] = 'Bug fixed: An IPv4 range in the Access Lists might not work as expected, depending on server/site settings.';
-
-	$news['6.5'][] = 'This version brings a new, advanced and more effective way of loading plugin modules and the plugin security engine. This allows Cerber Security to intercept and inspect suspicious requests more effectively and protect WordPress against attacks that try to exploit a vulnerability in a plugin or a theme. It’s advised to enable loading in Standard mode. To enable this new mode go to the Main Settings plugin admin page and set the Load security engine setting to Standard mode.';
-	$news['6.5'][] = 'Traffic Inspector’s algorithms detect and deny any attempt to upload executable files (including PHP and JavaScript) or .htaccess file via any public form or POST request.';
-	$news['6.5'][] = 'A new setting to disable email notifications about new versions of the plugin. It’s located on the Notification admin page in the Email notifications section.';
-	$news['6.5'][] = 'Search in the traffic log. Now it’s possible to search in the User agent string and filter out the HTTP method (GET/POST).';
-	$news['6.5'][] = 'In the Smart mode if a user is not logged in, all requests to the admin dashboard are logged.';
-	$news['6.5'][] = 'Performance of the logging subsystem is improved: the DB query has been updated.';
-
-	$news['6.7'][] = 'Antispam engine algorithms have been updated to improve AJAX requests handling and reduce false positives.';
-	$news['6.7'][] = 'Improved compatibility with WooCommerce, Formidable Forms, Gravity Forms and AJAX file upload.';
-	$news['6.7'][] = 'Regular expressions are now available for the Traffic Inspector Request whitelist and Antispam Query whitelist.';
-	$news['6.7'][] = 'Any symbols other than letters, numbers, dashes and underscores are not permitted for Custom login URL anymore. Previously configured URLs will work fine.';
-	$news['6.7'][] = 'Bug fixed: the Safe antispam mode doesn\'t work correctly on some website configurations. That may leads to false positives and erroneous spam form submission detection.';
-	$news['6.7'][] = 'Norwegian Bokmål and Dutch language translations have updated. Thanks to Jos Knippen and Eirik Vorland.';
-
-	$news['7.0'][] = 'We’re proud to announce a new version of the plugin with a new security tool: Cerber Security Scanner. The main purpose of the scanner is to provide a handy diagnostic tool to monitor all files on a website, verify the integrity of WordPress, plugins, themes and to detect and remove malware.';
-	$news['7.0'][] = 'A new setting has been added for Traffic Inspector: Use White IP Access List. When enabled it allows any requests from IP addresses in the White IP access list to bypass all Traffic Inspector security rules.';
-	$news['7.0'][] = 'Since v 7.0 the redirection from /wp-admin/ to the login page is not blocked if a not logged in user has been logged in once before.';
-
-	$news['7.2'][] = 'Monitoring files changes and new files.';
-	$news['7.2'][] = 'Monitoring changes, detecting malicious redirections and directives in .htaccess files.';
-	$news['7.2'][] = 'A new detector for Base64 encoded strings quickly detects obfuscated malware code and trojans.';
-	$news['7.2'][] = 'Automated hourly and daily scheduled scans with flexible email alerts and reports.';
-	$news['7.2'][] = 'Bug fixed: Unexpected warning messages in the WordPress dashboard.';
-	$news['7.2'][] = 'Bug fixed: Some file status links on the scanner results page may not work.';
-
-	$news['7.5'][] = 'The firewall algorithms have been improved and now inspect the contents of all files that are being tried to upload on a website.';
-	$news['7.5'][] = 'The traffic logger can save headers, cookies and the $_SERVER variable for every HTTP request.';
-	$news['7.5'][] = 'The scanner now scans installed plugins for known vulnerabilities. If you have enabled scheduled automatic scans you will be notified in a email report.';
-	$news['7.5'][] = 'A set of new malware signatures amd patterns have been added to detect malware submitted through a contact form as well as any HTTP request fields.';
-	$news['7.5'][] = 'Now the plugin inspects user sign ups (user registrations) on multisite WordPress installations and BuddyPress.';
-	$news['7.5'][] = 'The search for user activity, as well as enabling activity notifications, is improved.';
-
 	$news['7.6'][] = 'The quarantine has got a separate admin page in the WordPress dashboard which allows viewing deleted files, restoring or deleting them.';
 	$news['7.6'][] = 'Now the malware scanner and integrity checker supports multisite WordPress installations.';
 	$news['7.6'][] = 'Bug fixed: Once an address IP has been locked out after reaching the limit to the number of attempts to log in the "We’re sorry, you are not allowed to proceed" forbidden page is being displayed instead of the normal user message "You have exceeded the number of allowed login attempts".';
 	$news['7.6'][] = 'Bug fixed: PHP Notice: Only variables should be passed by reference in cerber-load.php on line 5377';
 
+	$news['7.7'][] = 'New: Automatic cleanup of malware and suspicious files. This powerful feature is available in the PRO version and automatically deletes trojans, viruses, backdoors, and other malware. Cerber Security Professional scans the website on an hourly basis and removes malware immediately.';
+	$news['7.7'][] = 'Update: Algorithms of the malware scanner have been improved to detect obfuscated malware code more precisely for all types of files.';
+	$news['7.7'][] = 'Update: Email reports for scheduled malware scans have been extended with useful performance numbers and a list of automatically deleted malicious files if you’ve enabled automatic malware removal and some files have been deleted.';
+	$news['7.7'][] = 'Fix: A possible issue with uploading large JSON and CSV files. When Traffic Inspector scans uploaded files for malware payload, some JSON and CSV files might be erroneously identified as containing a malicious payload.';
+	$news['7.7'][] = 'Fix: A possible Divi theme forms incompatibility. If you use the Divi theme (by Elegant Themes), you can come across a problem with submitting some forms.';
+
+	$news['7.8'][] = 'New: An ignore list for the malware scanner.';
+	$news['7.8'][] = 'New: Disabling execution of PHP scripts in the WordPress media folder helps to prevent offenders from exploiting security flaws. See the Hardening tab.';
+	$news['7.8'][] = 'New: Disabling PHP error as a setting is useful for misconfigured servers. See the Hardening tab.';
+	$news['7.8'][] = 'New: English for the admin interface. Enable it if you prefer to have untranslated, original admin interface. See the Main Settings tab.';
+	$news['7.8'][] = 'New: Diagnostic logging for the malware scanner. Specify a particular location of the log file by using the CERBER_DIAG_DIR constant.';
+	$news['7.8'][] = 'Update: The performance of malware scanning on a slow web server with thousands of issues and tens of thousands of files has been improved.';
+	$news['7.8'][] = 'Fix: If a malicious file is detected on a slow shared hosting, the file can be shown twice in the results of the scan.';
+
+	$news['7.8.5'][] = 'New: A new set of heuristics algorithms for detecting obfuscated malicious JavaScript code have been added to the Traffic Inspector firewall rules and malware scanner.';
+	$news['7.8.5'][] = 'New: A new file filter on the Quarantine page lets to filter out quarantined files by the date of the scan.';
+	$news['7.8.5'][] = 'New: The performance of the malware scanner has been improved. Now the scanner deletes all files in the website session and temporary folders permanently before the scan.';
+	$news['7.8.5'][] = 'Update: Now if the plugin is unable to detect the remote IP address, it will use 0.0.0.0 as an IP.';
+	$news['7.8.5'][] = 'Update: The anti-spam engine will never block the localhost IP which is 127.0.0.1 in case of IPv4 and ::1 in case of IPv6.';
+	$news['7.8.5'][] = 'Update: Improved handling the plugin settings in a buggy or misconfigured hosting environment that could cause the plugin to reset settings to their default values.';
+	$news['7.8.5'][] = 'Update: Translations have been updated. Thanks to Francesco, Jos Knippen, Fredrik Näslund, Slobodan Ljubic and MARCELHAP.';
+	$news['7.8.5'][] = 'Fix: Fixed an issue with saving settings on the Hardening tab: "Unable to get access to the file…"';
+
+	$news['7.9'][] = 'New: The plugin monitors suspicious requests that cause 4xx and 5xx HTTP errors and blocks IP addresses that aggressively generate such requests.';
+	$news['7.9'][] = 'New: A set of WordPress navigation menu links. Login, logout, and register menu items can be automatically generated and shown in any WordPress menu or a widget.';
+	$news['7.9'][] = 'New: Software error logging. A handy feature that logs PHP errors and shows them on the Live Traffic page.';
+	$news['7.9'][] = 'New: A new export feature for Traffic Inspector. It allows exporting all log entries or a filtered set from the log of HTTP requests.';
+	$news['7.9'][] = 'Update: Multiple improvements to Traffic Inspector firewall algorithms. In short, the detection of obfuscated malicious SQL queries and injections has been  improved.';
+	$news['7.9'][] = 'Fix: The number of email notifications per hour can exceed the configured limit.';
+	$news['7.9'][] = 'Update: Translations have been updated. Thanks to Felipe Turcheti and Eirik Vorland.';
+
+	$news['7.9.3'][] = 'New settings for the Traffic Inspector firewall allow you to fine-tune its behavior. You can enable less or more restrictive firewall rules.';
+	$news['7.9.3'][] = 'Troubleshooting of possible issues with scheduled maintenance tasks has been improved.';
+	$news['7.9.3'][] = 'To make troubleshooting easier the plugin logs not only a lockout event but also logs and displays the reason for the lockout.';
+	$news['7.9.3'][] = 'Compatibility with ManageWP and Gravity Forms has been improved.';
+	$news['7.9.3'][] = 'The layout of the Activity and Live Traffic pages has been improved.';
+	$news['7.9.3'][] = 'Bug fixed: The malware scanner wrongly prevents PHP files with few specific names in one particular location from being deleted after a manual scan or during the automatic malware removal.';
+	$news['7.9.3'][] = 'Bug fixed: The number of email notifications might be incorrectly limited to one email per hour.';
+
+	$news['7.9.7'][] = 'New: Authorized users only mode';
+	$news['7.9.7'][] = 'New: An ability to block a user account with a custom message';
+	$news['7.9.7'][] = 'New: Role-based access to WordPress REST API';
+	$news['7.9.7'][] = 'Added ability to search and filter a user on the Activity page';
+	$news['7.9.7'][] = 'Improved handling scheduled maintenance tasks on a multi-site WordPress installation';
+	$news['7.9.7'][] = 'A new Changelog section on the Tools page';
+
+	$news['8.0'][] = 'A new feature called Cerber.Hub enables you to manage WP Cerber settings, monitor user activity, watch website traffic, and upgrade plugins on an unlimited number of websites.';
+	$news['8.0'][] = 'To block multiple WordPress users at a time, use a new bulk action "Block" in the dropdown list on the Users admin page. Requires WordPress 4.7 or newer.';
+	$news['8.0'][] = 'We’ve significantly improved the export routine for the Activity and Live Traffic logs. Now it’s capable of exporting more than 500K rows in a single CSV file.';
 
 	if ( ! empty( $news[ $version ] ) ) {
 		//$text = '<h3>What\'s new in WP Cerber '.$version.'</h3>';
@@ -186,14 +148,13 @@ function cerber_push_the_news( $version ) {
 
 
 function cerber_admin_info($msg, $type = 'normal'){
-
+	//global $crb_assets_url;
 	$crb_assets_url = cerber_plugin_dir_url() . 'assets/';
-
 	update_site_option('cerber_admin_info',
 		'<table><tr><td><img style="float:left; margin-left:-10px;" src="'.$crb_assets_url.'icon-128x128.png"></td>'.
 		'<td>'.$msg.
 		'<p style="text-align:right;">
-		<input type="button" class="button button-primary cerber-dismiss" value=" &nbsp; '.__('Cool!','wp-cerber').' &nbsp; "/></p></td></tr></table>');
+		<input type="button" class="button button-primary cerber-dismiss" value=" &nbsp; '.__('Awesome!','wp-cerber').' &nbsp; "/></p></td></tr></table>');
 }
 
 

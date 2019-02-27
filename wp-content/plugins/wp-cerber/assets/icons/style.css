@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'crb';
   src:
-    url('fonts/crb.ttf?d0sjso') format('truetype'),
-    url('fonts/crb.woff?d0sjso') format('woff'),
-    url('fonts/crb.svg?d0sjso#crb') format('svg');
+    url('fonts/crb.ttf?o0t6it') format('truetype'),
+    url('fonts/crb.woff?o0t6it') format('woff'),
+    url('fonts/crb.svg?o0t6it#crb') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -29,6 +29,9 @@
 .crb-icon-bx-bell:before {
   content: "\e200";
 }
+.crb-icon-bx-bolt:before {
+  content: "\e93d";
+}
 .crb-icon-bx-briefcase-alt:before {
   content: "\e201";
 }
@@ -44,6 +47,9 @@
 .crb-icon-bx-cog:before {
   content: "\e203";
 }
+.crb-icon-bx-collection:before {
+  content: "\e980";
+}
 .crb-icon-bx-dashboard:before {
   content: "\e204";
 }
@@ -53,8 +59,17 @@
 .crb-icon-bx-error-circle:before {
   content: "\e206";
 }
+.crb-icon-bx-flask:before {
+  content: "\e9c2";
+}
 .crb-icon-bx-group:before {
   content: "\e207";
+}
+.crb-icon-bx-hide:before {
+  content: "\e9db";
+}
+.crb-icon-bx-history:before {
+  content: "\e9dc";
 }
 .crb-icon-bx-idea:before {
   content: "\e208";
@@ -64,6 +79,9 @@
 }
 .crb-icon-bx-layer:before {
   content: "\e210";
+}
+.crb-icon-bx-list-check:before {
+  content: "\e9ff";
 }
 .crb-icon-bx-lock:before {
   content: "\e211";
@@ -94,6 +112,9 @@
 }
 .crb-icon-bx-trash:before {
   content: "\ea98";
+}
+.crb-icon-bx-umbrella:before {
+  content: "\eaa1";
 }
 .crb-icon-bx-wrench:before {
   content: "\e220";

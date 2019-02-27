@@ -8,8 +8,8 @@
 	Text Domain: wp-cerber
 	Network: true
 
-	Copyright (C) 2015-18 CERBER TECH INC., http://cerber.tech
-	Copyright (C) 2015-18 Gregory Markov, https://wpcerber.com
+	Copyright (C) 2015-19 CERBER TECH INC., http://cerber.tech
+	Copyright (C) 2015-19 CERBER TECH INC., https://wpcerber.com
 
 	Licenced under the GNU GPL.
 
