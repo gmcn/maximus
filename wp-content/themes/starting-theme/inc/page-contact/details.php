@@ -31,7 +31,7 @@ $contentRightContent = get_field('contact_content_right_column');
 
   <div class="row contact_details">
     <div class="col-md-12">
-      <h2>Maximun Crushing & Screening</h2>
+      <h2>Maximus Crushing & Screening</h2>
     </div>
     <div class="col-md-3">
       <span>Address</span>

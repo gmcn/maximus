@@ -109,13 +109,16 @@ Nicolas Gallagher and Jonathan Neal https://necolas.github.io/normalize.css/
 # Content
 --------------------------------------------------------------*/
 @import "site/site";
+@import "pages/elements";
+@import "pages/page";
 @import "pages/about";
 @import "pages/news";
 @import "pages/partners";
+@import "pages/case-studies";
 @import "pages/contact";
 @import "pages/products";
 @import "pages/careers";
-@import "pages/elements";
+
 
 /*--------------------------------------------------------------
 # Infinite scroll

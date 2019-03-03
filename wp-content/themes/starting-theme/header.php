@@ -12,6 +12,15 @@
 ?><!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-5894174-48"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-5894174-48');
+</script>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="profile" href="http://gmpg.org/xfn/11">
@@ -75,29 +84,29 @@
 						</div>
 
 						<div class="col-md-6 overlay-content__contact">
-							<div class="wrapper">
+							<div class="col-md-12 wrapper">
 								<h3>Telephone</h3>
 								<a class="telephone" href="mailto:+442887748873">+44 (0)28 8774 8873</a>
 							</div>
 
-							<div class="wrapper">
+							<div class="col-md-12 wrapper">
 								<h3>Email</h3>
 								<a class="email" href="mailto:sales@maximusscreening.com">sales@maximusscreening.com</a>
 							</div>
 
-							<div class="wrapper">
-								<h3>Social</h3>
-								<a class="social" href="https://www.facebook.com/MaximusCandS/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/facebook.svg" alt="Follow Maximus Crushing and Screening on Facebook"></a>
-								<a class="social" href="https://www.youtube.com/channel/UCGiC4x9GyTXvl2LWC6XH4Rg/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/youtube.svg" alt="Follow Maximus Crushing and Screening on Youtube"></a>
-							</div>
+  							<div class="col-xs-4 col-md-12 wrapper">
+  								<h3>Social</h3>
+  								<a class="social" href="https://www.facebook.com/MaximusCandS/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/facebook.svg" alt="Follow Maximus Crushing and Screening on Facebook"></a>
+  								<a class="social" href="https://www.youtube.com/channel/UCGiC4x9GyTXvl2LWC6XH4Rg/" target="_blank"><img src="<?php echo get_template_directory_uri(); ?>/images/youtube.svg" alt="Follow Maximus Crushing and Screening on Youtube"></a>
+  							</div>
 
-							<div class="wrapper">
-								<h3>Search</h3>
-								<form action="/" method="get">
-							    <input type="text" name="s" id="search" value="<?php the_search_query(); ?>" />
-								</form>
-							</div>
-
+  							<div class="col-xs-8 col-md-12 wrapper">
+  								<h3>Search</h3>
+  								<form action="/" method="get">
+  							    <input type="text" name="s" id="search" value="<?php the_search_query(); ?>" />
+  								</form>
+  							</div>
+              </div>
 
 						</div>
 					</div>

@@ -99,7 +99,7 @@
 
     <div class="col-md-12 bottom">
       <hr>
-      <a class="back" href="/products">Back to Products</a>
+      <a class="back" href="<?php echo site_url(); ?>/products">Back to Products</a>
     </div>
 
 
