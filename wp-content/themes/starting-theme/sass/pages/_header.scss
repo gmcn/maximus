@@ -125,16 +125,20 @@ span.open {
       font-size: 12px;
       font-weight: 400;
       color: rgba(255, 255, 255, .5);
-      margin: 0 0 15px 0;
+      @include md {
+        margin: 0 0 15px 0;
+      }
     }
     &__contact {
       .wrapper {
-        margin-bottom: 25px;
+        @include md {
+          margin-bottom: 25px;
+        }
         a {
           transition: .5s;
         }
         a.telephone {
-          font-size: 22px;
+          font-size: 18px;
           @include md {
             font-size: 36px;
           }
@@ -144,7 +148,7 @@ span.open {
           color: #fff;
         }
         a.email {
-          font-size: 22px;
+          font-size: 18px;
           @include md {
             font-size: 30px;
           }

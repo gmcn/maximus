@@ -1,6 +1,8 @@
 .parent {
   border-bottom: 5px solid #fff;
   margin-bottom: 50px;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
   h2 {
     font-size: 30px;
     font-weight: 700;
@@ -9,7 +11,11 @@
     margin: 0 0 50px 0;
   }
   .breadcrumbs {
-    text-align: right;
+    margin-bottom: 25px;
+    @include md {
+      text-align: right;
+      margin-bottom: 0;
+    }
     font-size: 14px;
     color: #fff;
     font-weight: 700;
