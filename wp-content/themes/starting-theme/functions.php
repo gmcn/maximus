@@ -206,6 +206,12 @@ echo '<link rel="stylesheet" type="text/css" href="' . get_bloginfo('stylesheet_
 }
 add_action('login_head', 'my_custom_login');
 
+function cc_mime_types($mimes) {
+  $mimes['svg'] = 'image/svg+xml';
+  return $mimes;
+}
+add_filter('upload_mimes', 'cc_mime_types');
+
 // Register Products Custom Post Type
 function products_post_type() {
 	$labels = array(
@@ -453,7 +459,7 @@ function case_studies_post_type() {
 		'show_ui'               => true,
 		'show_in_menu'          => true,
 		'menu_position'         => 5,
-		'menu_icon'             => 'dashicons-admin-site',
+		'menu_icon'             => 'dashicons-format-status',
 		'show_in_admin_bar'     => true,
 		'show_in_nav_menus'     => true,
 		'can_export'            => true,
