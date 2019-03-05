@@ -11,7 +11,7 @@
 
 ?>
 
-	</div><!-- #content -->
+</div> <!-- #content -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
 	<footer>
@@ -30,7 +30,7 @@
 			<a href="https://digital-only.com" target="_blank"><img class="do" src="<?php echo get_template_directory_uri() ?>/images/digital-only.svg" alt="Designed and developed by Digital Only"></a>
 		</div>
 	</footer><!-- /footer -->
-</div><!-- #page -->
+ </div> <!-- #page -->
 
 <?php wp_footer(); ?>
 

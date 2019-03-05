@@ -1,0 +1,33 @@
+.download {
+  border-bottom: 2px dotted #fff;
+  margin-bottom: 50px;
+  padding-bottom: 50px;
+  color: #fff;
+  &__single {
+    text-align: center;
+    img {
+      padding: 20px;
+      transition: .5s;
+    }
+    a, a:visited, a:focus {
+      color: #fff;
+      transition: .5s;
+    }
+    a:hover {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      img {
+        opacity: .8;
+      }
+    }
+  }
+  h2 {
+    font-size: 25px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+}

@@ -494,6 +494,114 @@ function case_studies_taxonomies()
     register_taxonomy( 'case_studies_product_type', array( 'case_studies' ), $case_studies_area_args );
 }
 
+// Register Custom Post Type
+function downloads_post_type() {
+	$labels = array(
+		'name'                  => _x( 'Downloads', 'Post Type General Name', 'text_domain' ),
+		'singular_name'         => _x( 'Download', 'Post Type Singular Name', 'text_domain' ),
+		'menu_name'             => __( 'Downloads', 'text_domain' ),
+		'name_admin_bar'        => __( 'Download', 'text_domain' ),
+		'archives'              => __( 'Item Archives', 'text_domain' ),
+		'attributes'            => __( 'Item Attributes', 'text_domain' ),
+		'parent_item_colon'     => __( 'Parent Item:', 'text_domain' ),
+		'all_items'             => __( 'All Items', 'text_domain' ),
+		'add_new_item'          => __( 'Add New Item', 'text_domain' ),
+		'add_new'               => __( 'Add New', 'text_domain' ),
+		'new_item'              => __( 'New Item', 'text_domain' ),
+		'edit_item'             => __( 'Edit Item', 'text_domain' ),
+		'update_item'           => __( 'Update Item', 'text_domain' ),
+		'view_item'             => __( 'View Item', 'text_domain' ),
+		'view_items'            => __( 'View Items', 'text_domain' ),
+		'search_items'          => __( 'Search Item', 'text_domain' ),
+		'not_found'             => __( 'Not found', 'text_domain' ),
+		'not_found_in_trash'    => __( 'Not found in Trash', 'text_domain' ),
+		'featured_image'        => __( 'Featured Image', 'text_domain' ),
+		'set_featured_image'    => __( 'Set featured image', 'text_domain' ),
+		'remove_featured_image' => __( 'Remove featured image', 'text_domain' ),
+		'use_featured_image'    => __( 'Use as featured image', 'text_domain' ),
+		'insert_into_item'      => __( 'Insert into item', 'text_domain' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this item', 'text_domain' ),
+		'items_list'            => __( 'Items list', 'text_domain' ),
+		'items_list_navigation' => __( 'Items list navigation', 'text_domain' ),
+		'filter_items_list'     => __( 'Filter items list', 'text_domain' ),
+	);
+	$args = array(
+		'label'                 => __( 'Download', 'text_domain' ),
+		'description'           => __( 'Downloads information page.', 'text_domain' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'revisions', 'featured' ),
+		'hierarchical'          => false,
+		'public'                => true,
+		'show_ui'               => true,
+		'show_in_menu'          => true,
+		'menu_position'         => 5,
+		'menu_icon'             => 'dashicons-clipboard',
+		'show_in_admin_bar'     => true,
+		'show_in_nav_menus'     => true,
+		'can_export'            => true,
+		'has_archive'           => true,
+		'exclude_from_search'   => false,
+		'publicly_queryable'    => true,
+		'capability_type'       => 'page',
+	);
+	register_post_type( 'downloads', $args );
+}
+add_action( 'init', 'downloads_post_type', 0 );
+add_action( 'init', 'downloads_taxonomies', 0 );
+function downloads_taxonomies() {
+    // Download Category Taxonomy
+    $download_cat_labels = array(
+        'name'          => 'Download Category',
+        'singular_name' => 'Download Category',
+        'menu_name'     => 'Download Categories'
+    );
+    $download_cat_args = array(
+        'labels'                     => $download_cat_labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'rewrite'                    => array('pages' => true)
+    );
+    register_taxonomy( 'downloads_category', array( 'downloads' ), $download_cat_args );
+		// Download Model Taxonomy
+    $download_model_labels = array(
+        'name'          => 'Download Model',
+        'singular_name' => 'Download Model',
+        'menu_name'     => 'Download Models'
+    );
+    $download_model_args = array(
+        'labels'                     => $download_model_labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'rewrite'                    => array('pages' => true)
+    );
+    register_taxonomy( 'downloads_model', array( 'downloads' ), $download_model_args );
+		// Download Type Taxonomy
+    $download_type_labels = array(
+        'name'          => 'Download File Type',
+        'singular_name' => 'Download File Type',
+        'menu_name'     => 'Download File Types'
+    );
+    $download_type_args = array(
+        'labels'                     => $download_type_labels,
+        'hierarchical'               => true,
+        'public'                     => true,
+        'show_ui'                    => true,
+        'show_admin_column'          => true,
+        'show_in_nav_menus'          => true,
+        'show_tagcloud'              => true,
+        'rewrite'                    => array('pages' => true)
+    );
+    register_taxonomy( 'downloads_type', array( 'downloads' ), $download_type_args );
+}
+
 function set_posts_per_page_for_cpt( $query ) {
   if ( !is_admin() && $query->is_main_query() && is_post_type_archive( array('partners') ) ) {
     $query->set( 'posts_per_page', '-1' );
