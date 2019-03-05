@@ -25,6 +25,12 @@ ul.nav li.menu-item-has-children:hover > ul.dropdown-menu {
   }
 }
 
+.home header {
+position: absolute;
+top: 0;
+width: 100%;
+}
+
 header {
   padding: 0 0 15px 0;
   .site-branding {
@@ -36,7 +42,7 @@ header {
       border-top: 10px solid #9F000A;
     }
     img.logo {
-      height: 82px;
+      max-height: 82px;
       position: relative;
       z-index: 999;
       // padding-top: 10px;
@@ -199,10 +205,10 @@ span.open {
     }
     ul ul {
       margin-left: 15px;
-      @include md {
+      // @include md {
         display: none;
         transition: 0.5s;
-      }
+      // }
       a {
         @include md {
           font-size: 20px;

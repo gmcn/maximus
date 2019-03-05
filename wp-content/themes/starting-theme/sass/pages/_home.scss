@@ -6,7 +6,6 @@
 .hero {
   height: 100vh;
   position: relative;
-  margin-top: -100px;
   margin-bottom: 15px;
   padding-left: 0;
   padding-right: 0;
@@ -111,6 +110,12 @@
   padding: 75px 0;
   font-size: 55px;
   font-weight: 300;
+  img {
+    display: block;
+    @include md {
+      display: inline-block;
+    }
+  }
   span {
     font-weight: 700;
   }
@@ -395,12 +400,21 @@
     text-decoration: none;
   }
   .col-md-12 {
-    padding: 100px;
+    padding: 50px 0;
+    @include md {
+      padding: 50px;
+    }
+    @include lg {
+      padding: 100px;
+    }
   }
   .col-md-12:before {
     content: "“";
     color: #fff;
-    font-size: 150px;
+    font-size: 90px;
+    @include md {
+      font-size: 150px;
+    }
     font-weight: 700;
     float: left;
     line-height: .5em;
@@ -410,7 +424,10 @@
   .col-md-12:after {
     content: "“";
     color: #fff;
-    font-size: 150px;
+    font-size: 90px;
+    @include md {
+      font-size: 150px;
+    }
     font-weight: 700;
     float: right;
     line-height: .5em;

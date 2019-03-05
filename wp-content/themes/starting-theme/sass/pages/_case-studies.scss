@@ -6,6 +6,9 @@
       background: #6F919B;
       padding-top: 20px;
       margin-bottom: 75px;
+      .matchheight {
+        min-height: 250px;
+      }
       h2 {
         font-size: 20px;
         font-weight: 700;

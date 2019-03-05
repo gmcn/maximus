@@ -84,12 +84,12 @@
 						</div>
 
 						<div class="col-md-6 overlay-content__contact">
-							<div class="col-md-12 wrapper">
+							<div class="wrapper">
 								<h3>Telephone</h3>
 								<a class="telephone" href="mailto:+442887748873">+44 (0)28 8774 8873</a>
 							</div>
 
-							<div class="col-md-12 wrapper">
+							<div class="wrapper">
 								<h3>Email</h3>
 								<a class="email" href="mailto:sales@maximusscreening.com">sales@maximusscreening.com</a>
 							</div>

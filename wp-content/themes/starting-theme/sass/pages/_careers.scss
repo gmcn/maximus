@@ -4,8 +4,12 @@
   background-image: linear-gradient(to bottom, #1f2d36, #273844, #2f4452, #375060, #405c6f);
   .career {
     border-bottom: 2px dotted #fff;
-    padding-top: 50px;
-    padding-bottom: 50px;
+    @include md {
+      padding-top: 50px;
+      padding-bottom: 50px;
+    }
+    padding-top: 25px;
+    padding-bottom: 25px;
     .overlay {
       background-color: rgba(172, 33, 83, 1);
       .closebtn:hover {
@@ -56,6 +60,12 @@
     .buttons {
       text-align: center;
       a {
+        display: block;
+        margin-top: 15px;
+        @include md {
+          display: inline-block;
+          margin-top: 0;
+        }
         background: #9F000A;
         padding: 15px 25px;
         text-transform: uppercase;
@@ -97,7 +107,7 @@
   }
 
   .label {
-    margin-bottom: 7.5px;
+    margin-top: 7.5px;
     display: block;
     color: #fff;
     font-style: normal;
