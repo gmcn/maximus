@@ -52,6 +52,23 @@ $('a[href*="#"]')
 
 } ) (jQuery);
 
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#9f000b",
+      "text": "#ffffff"
+    },
+    "button": {
+      "background": "#ffffff",
+      "text": "#9f000b"
+    }
+  },
+  "content": {
+    "href": "privacy-policy"
+  }
+})});
+
 /* Open when someone clicks on the span element */
 function openNav() {
     document.getElementById("myNav").style.height = "100%";
