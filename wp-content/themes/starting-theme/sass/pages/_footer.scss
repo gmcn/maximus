@@ -1,5 +1,9 @@
 .grecaptcha-badge {
   bottom: 60px !important;
+  display: none;
+}
+.page-template-page-contact .grecaptcha-badge {
+  display: block;
 }
 footer {
   padding-top: 30px;
