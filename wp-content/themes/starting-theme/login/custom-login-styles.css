@@ -3,14 +3,14 @@
 }
 
 .login h1 a {
-	background-image: url('../images/logo.svg') !important;
+	background-image: url('../images/maximus-logo-mark.svg') !important;
     width: auto;
     background-size: contain;
-    height: 80px;
+    height: 150px;
 }
 
 .login #backtoblog a, .login #nav a {
-	color: white;
+	color: #fff;
 }
 
 .login #backtoblog a:hover, .login #nav a:hover, .login h1 a:hover {
@@ -18,7 +18,7 @@
 }
 
 body.login {
-  background: #fdfdfd url("../images/wp-login-bg.jpg");
+  background: #9F000A;
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
