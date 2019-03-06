@@ -5,7 +5,9 @@
     border-bottom: 5px solid #fff;
     margin-bottom: 50px;
     .breadcrumbs {
-      text-align: right;
+      @include md {
+        text-align: right;
+      }
       font-size: 14px;
       color: #fff;
       font-weight: 700;
@@ -32,7 +34,10 @@
     font-weight: 700;
     color: #fff;
     text-transform: uppercase;
-    margin: 0 0 50px 0;
+    @include md {
+      margin: 0 0 50px 0;
+    }
+    margin: 0 0 25px 0;
   }
   h2 {
     font-size: 40px;

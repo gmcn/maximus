@@ -15,7 +15,7 @@ $contentRightContent = get_field('contact_content_right_column');
 
 <div class="container-fluid contact">
 
-  <div class="row title">
+  <div class="row parent">
     <div class="col-md-6">
       <h1><?php the_title(); ?></h1>
     </div>
